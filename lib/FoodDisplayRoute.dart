@@ -13,6 +13,7 @@ class FoodDisplayRoute extends StatefulWidget {
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
   List<String> filters;
+  
   void initState() {
     super.initState();
     filters = List();
@@ -21,17 +22,21 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   @override
   Widget build(BuildContext context) {
-    // double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        //centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){},
+          )
+        ],
+        centerTitle: true,
       ),
       body: Container(
         child: Column(
           children: <Widget>[
-            /* Container(
+            Container(
               margin: EdgeInsets.all(widget.margin),
               width: double.infinity,
               child: Row(
@@ -56,14 +61,13 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
               ),
             ),
             Divider(
-              color: Colors.brown,
               height: 0,
-            ),*/
-            /*Expanded(
+            ),
+            Expanded(
               child: ListView(
                 children: <Widget>[],
               ),
-            ),*/
+            ),
           ],
         ),
       ),
@@ -74,7 +78,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Widget> buildFiltersList() {
     return [
       Chip(
-        label: Text('UTM'),
+        label: Text('Microwave'),
+      ),
+      Chip(
+        label: Text('Pizza'),
       ),
       Chip(
         label: Text('Open'),
@@ -84,10 +91,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   BottomNavigationBar buildBottomNavigationBar() {
     List<BottomNavigationBarItem> items = List();
-    // items.add(BottomNavigationBarItem(
-    //   icon: Icon(Icons.all_inclusive),
-    //   title: Text("All"),
-    // ));
+    items.add(BottomNavigationBarItem(
+      icon: Icon(Icons.all_inclusive),
+      title: Text("All"),
+    ));
     items.add(BottomNavigationBarItem(
       icon: Icon(Icons.book),
       title: Text("UTM"),
@@ -102,7 +109,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     ));
     BottomNavigationBar nav = BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      fixedColor: Colors.red,
       items: items,
     );
     return nav;
