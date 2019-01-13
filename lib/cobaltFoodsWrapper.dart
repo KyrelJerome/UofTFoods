@@ -6,18 +6,37 @@ import 'Objects/Hours.dart';
 
 ///
 /// The REST API returns words that rhyme or are related to [Topic].
-class DataMuseApi {
+class CobaltApi {
   static const String key = 'bylTKgsa08vezNaD8VVdwrfx5vqnXN48';
   static const String keyParam = '/?key=' + key;
   /// The API endpoint we want to hit.
   static const String _url = 'cobalt.qas.im/api/1.0/food';
-  static const String prefixSkip = 'limit';
-  static const String prefixLimit = 'skip';
+  static const String prefixLimit = 'limit';
+  static const String prefixSkip = 'skip';
   static const String prefixSort = 'sort';
-  String topicString;
+  static const String prefixTags = 'tags';
+  
+  String limitString = '';
+  String skipString = '';
+  String sortString = '';
+  List<String> tags = List();
+  String query=  '';
 
-  setTopicString(String topic){
-   topicString = topic; 
+  reset(){
+    query = '';
+    removeLimit();
+  }
+  addTag(String tag){
+    tags.add(tag);
+  }
+  removeTags(){
+    tags = List();
+  }
+  addlimit(int limit){
+   limitString = limit.toString(); 
+  }
+  removeLimit(){
+    limitString = '';
   }
   /// Returns a list. Returns null on error.
   Future<List<String>> getFoodsJson(String word) async {
@@ -40,7 +59,7 @@ class DataMuseApi {
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
     try {
-      final responseBody = (await http.get(url + (topicString != null? topicPrefix+(topicString):'') )).body;
+      final responseBody = (await http.get(url + (limitString != null? prefixLimit+ '='+ (limitString):'') )).body;
       // Finally, the string is parsed into a JSON object.
       return json.decode(responseBody);
     } on Exception catch (e) {
@@ -51,7 +70,4 @@ class DataMuseApi {
 }
 Store _getStoreFromJson(){
 
-}
-getStoreFromJson(){
-  
 }

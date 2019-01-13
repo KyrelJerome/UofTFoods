@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
         brightness: Brightness.dark
       ),
-      home: FoodDisplayRoute(title: 'University of Toronto Foods'),
+      home: FoodDisplayRoute(title: 'Deer Foods'),
     );
   }
 }
