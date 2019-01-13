@@ -29,9 +29,9 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<BottomNavigationBarItem> buildBottomNavigationBar() {
     List<BottomNavigationBarItem> items = List();
-    items.add(BottomNavigationBarItem(icon: Text("UTM"), title: Text("UTM")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSG"), title: Text("UTSG")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSC"), title: Text("UTSC")));
+    items.add(BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTM")));
+    items.add(BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTSG")));
+    items.add(BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTSC")));
     //TODO: Replace with campus logos?
     return items;
   }
