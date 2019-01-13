@@ -18,6 +18,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
       ),
       body: ListView(),
       bottomNavigationBar: BottomNavigationBar(
@@ -28,9 +29,9 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<BottomNavigationBarItem> buildBottomNavigationBar() {
     List<BottomNavigationBarItem> items = List();
-    items.add(BottomNavigationBarItem(icon: Text("UTM")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSG")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSC")));
+    items.add(BottomNavigationBarItem(icon: Text("UTM"), title: Text("UTM")));
+    items.add(BottomNavigationBarItem(icon: Text("UTSG"), title: Text("UTSG")));
+    items.add(BottomNavigationBarItem(icon: Text("UTSC"), title: Text("UTSC")));
     //TODO: Replace with campus logos?
     return items;
   }
