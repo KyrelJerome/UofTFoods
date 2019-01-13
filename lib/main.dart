@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'FoodDisplayRoute.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,33 +20,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class FoodDisplayRoute extends StatefulWidget {
-  FoodDisplayRoute({Key key, this.title}) : super(key: key);
-  final String title;
-  @override
-  _FoodDisplayRouteState createState() => _FoodDisplayRouteState();
-}
-
-class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: ListView(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: buildBottomNavigationBar(),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  List<BottomNavigationBarItem> buildBottomNavigationBar() {
-    List<BottomNavigationBarItem> items = List();
-    items.add(BottomNavigationBarItem(icon: Text("UTM")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSG")));
-    items.add(BottomNavigationBarItem(icon: Text("UTSC")));
-    //TODO: Replace with campus logos?
-    return items;
-  }
-}
