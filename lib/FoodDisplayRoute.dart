@@ -12,31 +12,55 @@ class FoodDisplayRoute extends StatefulWidget {
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
+  List<String> filters;
   void initState() {
     super.initState();
+    filters = List();
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(widget.margin),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: buildFiltersList(),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(widget.margin),
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "Filters:",
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+                  Container(
+                    child: Expanded(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 8.0,
+                        children: buildFiltersList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          ListView(),
-        ],
+            Divider(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: buildBottomNavigationBar(),
+        currentIndex: 1,
       ),
     );
   }
@@ -44,22 +68,32 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Widget> buildFiltersList() {
     return [
       Chip(
-        label: Text('nah'),
+        label: Text('UTM'),
       ),
       Chip(
-        label: Text('nah'),
+        label: Text('Open'),
       )
     ];
   }
+
   List<BottomNavigationBarItem> buildBottomNavigationBar() {
     List<BottomNavigationBarItem> items = List();
-    items.add(
-        BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTM")));
-    items.add(
-        BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTSG")));
-    items.add(
-        BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("UTSC")));
-    //TODO: Replace with campus logos?
+    items.add(BottomNavigationBarItem(
+      icon: Icon(Icons.all_inclusive),
+      title: Text("All"),
+    ));
+    items.add(BottomNavigationBarItem(
+      icon: Icon(Icons.book),
+      title: Text("UTM"),
+    ));
+    items.add(BottomNavigationBarItem(
+      icon: Icon(Icons.book),
+      title: Text("UTSG"),
+    ));
+    items.add(BottomNavigationBarItem(
+      icon: Icon(Icons.book),
+      title: Text("UTSC"),
+    ));
     return items;
   }
 }
