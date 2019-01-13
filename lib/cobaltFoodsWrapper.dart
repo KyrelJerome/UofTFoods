@@ -68,6 +68,3 @@ class CobaltApi {
     }
   }
 }
-Store _getStoreFromJson(){
-
-}
