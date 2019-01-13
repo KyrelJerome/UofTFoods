@@ -13,11 +13,12 @@ class FoodDisplayRoute extends StatefulWidget {
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
   List<String> filters;
-  
+  DateTime date; 
   void initState() {
     super.initState();
     filters = List();
     stores = List();
+    date = DateTime.now();
   }
 
   @override
