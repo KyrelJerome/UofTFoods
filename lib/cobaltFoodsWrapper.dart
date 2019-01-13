@@ -9,38 +9,44 @@ import 'Objects/Hours.dart';
 class CobaltApi {
   static const String key = 'bylTKgsa08vezNaD8VVdwrfx5vqnXN48';
   static const String keyParam = '/?key=' + key;
+
   /// The API endpoint we want to hit.
   static const String _url = 'cobalt.qas.im/api/1.0/food';
   static const String prefixLimit = 'limit';
   static const String prefixSkip = 'skip';
   static const String prefixSort = 'sort';
   static const String prefixTags = 'tags';
-  
+
   String limitString = '';
   String skipString = '';
   String sortString = '';
   List<String> tags = List();
-  String query=  '';
+  String query = '';
 
-  reset(){
+  reset() {
     query = '';
     removeLimit();
   }
-  addTag(String tag){
+
+  addTag(String tag) {
     tags.add(tag);
   }
-  removeTags(){
+
+  removeTags() {
     tags = List();
   }
-  addlimit(int limit){
-   limitString = limit.toString(); 
+
+  addlimit(int limit) {
+    limitString = limit.toString();
   }
-  removeLimit(){
+
+  removeLimit() {
     limitString = '';
   }
+
   /// Returns a list. Returns null on error.
   Future<List<String>> getFoodsJson(String word) async {
-    final uri = 'https://'+ _url + keyParam;
+    final uri = 'https://' + _url + keyParam;
     final jsonResponse = await _getJson(uri);
     List<String> jsonList = List();
     if (jsonResponse != null) {
@@ -48,18 +54,20 @@ class CobaltApi {
         if (jsonResponse[i] == null) {
           print('Error retrieving Store at index $i.');
         } else {
-          
           jsonList.add(jsonResponse[i]);
         }
       }
     }
     return jsonList;
   }
-/// Fetches and decodes a JSON object represented as a Dart [Map].
+
+  /// Fetches and decodes a JSON object represented as a Dart [Map].
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
     try {
-      final responseBody = (await http.get(url + (limitString != null? prefixLimit+ '='+ (limitString):'') )).body;
+      final responseBody = (await http.get(url +
+              (limitString != null ? prefixLimit + '=' + (limitString) : '')))
+          .body;
       // Finally, the string is parsed into a JSON object.
       return json.decode(responseBody);
     } on Exception catch (e) {
