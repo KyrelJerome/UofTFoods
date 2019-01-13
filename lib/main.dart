@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         // changing the primarySwatch below to Colors.green and then invoke
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or simply save your changes to "hot reload" in a Flutter IDE).
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
         brightness: Brightness.dark
       ),
       home: FoodDisplayRoute(title: 'University of Toronto Foods'),

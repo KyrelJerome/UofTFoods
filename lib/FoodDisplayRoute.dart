@@ -16,21 +16,22 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void initState() {
     super.initState();
     filters = List();
+    stores = List();
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        centerTitle: true,
+        //centerTitle: true,
       ),
       body: Container(
         child: Column(
           children: <Widget>[
-            Container(
+            /* Container(
               margin: EdgeInsets.all(widget.margin),
               width: double.infinity,
               child: Row(
@@ -54,14 +55,19 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                 ],
               ),
             ),
-            Divider(),
+            Divider(
+              color: Colors.brown,
+              height: 0,
+            ),*/
+            /*Expanded(
+              child: ListView(
+                children: <Widget>[],
+              ),
+            ),*/
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: buildBottomNavigationBar(),
-        currentIndex: 1,
-      ),
+      bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 
@@ -76,12 +82,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     ];
   }
 
-  List<BottomNavigationBarItem> buildBottomNavigationBar() {
+  BottomNavigationBar buildBottomNavigationBar() {
     List<BottomNavigationBarItem> items = List();
-    items.add(BottomNavigationBarItem(
-      icon: Icon(Icons.all_inclusive),
-      title: Text("All"),
-    ));
+    // items.add(BottomNavigationBarItem(
+    //   icon: Icon(Icons.all_inclusive),
+    //   title: Text("All"),
+    // ));
     items.add(BottomNavigationBarItem(
       icon: Icon(Icons.book),
       title: Text("UTM"),
@@ -94,6 +100,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       icon: Icon(Icons.book),
       title: Text("UTSC"),
     ));
-    return items;
+    BottomNavigationBar nav = BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      fixedColor: Colors.red,
+      items: items,
+    );
+    return nav;
   }
 }
