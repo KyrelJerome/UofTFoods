@@ -45,16 +45,16 @@ class CobaltApi {
   }
 
   /// Returns a list. Returns null on error.
-  Future<List<String>> getFoodsJson(String word) async {
+  Future<List<Store>> getFoodsJson() async {
     final uri = 'https://' + _url + keyParam;
     final jsonResponse = await _getJson(uri);
-    List<String> jsonList = List();
+    List<Store> jsonList = List();
     if (jsonResponse != null) {
       for (int i = 0; i < jsonResponse.length; i++) {
         if (jsonResponse[i] == null) {
           print('Error retrieving Store at index $i.');
         } else {
-          jsonList.add(jsonResponse[i]);
+          jsonList.add(Store.fromJson(jsonResponse[i]));
         }
       }
     }
