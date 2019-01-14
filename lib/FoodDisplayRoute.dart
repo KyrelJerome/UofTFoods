@@ -13,6 +13,9 @@ class FoodDisplayRoute extends StatefulWidget {
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
   List<String> filters;
+  int openFilter;
+  int tags;
+  String building;
   DateTime date; 
   void initState() {
     super.initState();
@@ -75,7 +78,9 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
+  List<Widget> buildActiveStoreWidgets(){
 
+  }
   List<Widget> buildFiltersList() {
     return [
       Chip(

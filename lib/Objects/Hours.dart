@@ -1,7 +1,12 @@
 class  Hours{
   Map<String, Map<String,int>> hours;
   factory Hours.fromJson(Map<String, dynamic> parsedJson){
-    return Hours
+    return null;
   }
-  getHoursDate()
+  getStartDateTime(){
+
+  }
+  getEndDateTime(){
+
+  }
 }
