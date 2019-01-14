@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Hours.dart';
-
+  
 class Store {
   String id;
   String buildingID;
