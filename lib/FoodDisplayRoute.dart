@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'Objects/Hours.dart';
-
+import 'API/cobaltFoodsWrapper.dart';
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -13,17 +13,23 @@ class FoodDisplayRoute extends StatefulWidget {
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
   List<String> filters;
+  CobaltApi api;
   int openFilter;
   int tags;
   String building;
-  DateTime date; 
+  DateTime date;
   void initState() {
     super.initState();
+    api = CobaltApi();
     filters = List();
     stores = List();
     date = DateTime.now();
+    loadUnfilteredStores();
   }
-
+  void loadUnfilteredStores() async{
+    List<Store> loadStream =  await api.getFoodsJson();
+    setState(() => (stores = loadStream));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: (){},
+            onPressed: () {},
           )
         ],
         centerTitle: true,
@@ -69,7 +75,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             ),
             Expanded(
               child: ListView(
-                children: <Widget>[],
+                children: buildActiveStoreWidgets(),
               ),
             ),
           ],
@@ -78,9 +84,42 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
-  List<Widget> buildActiveStoreWidgets(){
 
+  List<Widget> buildActiveStoreWidgets() {
+    List<Widget> storeCards = List();
+    for (int i = 0; i < stores.length; i++) {
+      Image storeImage;
+      Image.network(stores[i].logoString);
+      Widget storeCard = Container(
+          height: 88,
+          width: double.infinity,
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(4),
+                width: 80,
+                height: 80,
+                child:Text("Placeholder"), // TODO: replace with: storeImage,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    stores[i].name,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  Text(
+                    stores[i].id,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                ],
+              ),
+            ],
+          ));
+        storeCards.add(storeCard);
+    }
+    return storeCards;
   }
+
   List<Widget> buildFiltersList() {
     return [
       Chip(
