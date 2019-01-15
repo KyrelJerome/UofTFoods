@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
+
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -26,10 +27,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     date = DateTime.now();
     loadUnfilteredStores();
   }
-  void loadUnfilteredStores() async{
-    List<Store> loadStream =  await api.getFoodsJson();
+
+  void loadUnfilteredStores() async {
+    List<Store> loadStream = await api.getFoodsJson();
     setState(() => (stores = loadStream));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +52,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Container(
               margin: EdgeInsets.all(widget.margin),
               width: double.infinity,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                     child: Text(
@@ -86,37 +90,52 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<Widget> buildActiveStoreWidgets() {
     List<Widget> storeCards = List();
-    for (int i = 0; i < stores.length; i++) {
-      Image storeImage;
-     // Image.network(stores[i].logoString);
-      Widget storeCard = Container(
-          height: 88,
-          width: double.infinity,
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(4),
-                width: 80,
-                height: 80,
-                child:Text("Placeholder"), // TODO: replace with: storeImage,
-              ),
-              Column(
+    if (storeCards.length > 1) {
+      storeCards.add(buildStoreCard(stores[0]));
+    }
+    for (int i = 1; i < stores.length; i++) {
+      storeCards.add(Divider());
+      storeCards.add(buildStoreCard(stores[i]));
+    }
+    return storeCards;
+  }
+
+  Widget buildStoreCard(Store store) {
+    Image storeImage;
+    String imageAlert = 'No image provided';
+    if (store != null && store.website != null  && store.website != ""){
+        storeImage = Image.network(store.website);
+        imageAlert = 'Image provided and found';
+    }
+    Widget storeCard = Container(
+        margin: EdgeInsets.all(8),
+        height: 88,
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(4),
+              width: 80,
+              height: 80,
+              child: Text(imageAlert) // TODO: replace with: storeImage,
+            ),
+            Expanded(
+              child: Column(
                 children: <Widget>[
                   Text(
-                    stores[i].name,
+                    store.name,
                     style: Theme.of(context).textTheme.title,
                   ),
                   Text(
-                    stores[i].id,
+                    store.id,
                     style: Theme.of(context).textTheme.subtitle,
                   ),
                 ],
               ),
-            ],
-          ));
-        storeCards.add(storeCard);
-    }
-    return storeCards;
+            ),
+          ],
+        ));
   }
 
   List<Widget> buildFiltersList() {
