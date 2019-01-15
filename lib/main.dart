@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or simply save your changes to "hot reload" in a Flutter IDE).
         primarySwatch: Colors.blue,
-        brightness: Brightness.dark
+        brightness: Brightness.light
       ),
       home: FoodDisplayRoute(title: 'Deer Foods'),
     );

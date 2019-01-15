@@ -31,10 +31,14 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void loadUnfilteredStores() async {
     List<Store> loadStream = await api.getFoodsJson();
     setState(() => (stores = loadStream));
+    loadUnfilteredStoreImages();
+  }
+
+  void loadUnfilteredStoreImages() async {
     List<Image> storeImages = List();
     for (int i = 0; i < stores.length; i++) {
       if (stores[i].logoString != null && stores[i].logoString != "") {
-        storeImages.add(Image.network(stores[i].logoString));
+        storeImages.add(Image.network(stores[i].logoString, height:80, width: 80, fit: BoxFit.fill));
       } else {
         storeImages.add(null);
       }
@@ -81,6 +85,13 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                         spacing: 8.0,
                         children: buildFiltersList(),
                       ),
+                    ),
+                  ),
+
+                  Center(
+                    child: IconButton(
+                      icon: Icon(Icons.filter_list),
+                      onPressed: ()=>{},
                     ),
                   ),
                 ],
