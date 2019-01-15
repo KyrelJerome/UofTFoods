@@ -30,7 +30,7 @@ class Store {
     @required this.address,
   });
 
-  factory Store.fromJson(Map<String, String> parsedJson) {
+  factory Store.fromJson(Map<String, dynamic> parsedJson) {
     return Store(
       id: parsedJson['id'],
       buildingID: parsedJson['building_id'],
@@ -38,8 +38,8 @@ class Store {
       logoString: parsedJson['logo'],
       shortName: parsedJson['short_name'],
       campus: parsedJson['campus'],
-      lat: double.parse(parsedJson['lat']),
-      lng: double.parse(parsedJson['lng']),
+      lat: parsedJson['lat'],
+      lng: parsedJson['lng'],
       address: parsedJson['address'],
       website: parsedJson['website'],
     );

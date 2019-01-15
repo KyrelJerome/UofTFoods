@@ -49,8 +49,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Container(
               margin: EdgeInsets.all(widget.margin),
               width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                     child: Text(
@@ -89,7 +88,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     List<Widget> storeCards = List();
     for (int i = 0; i < stores.length; i++) {
       Image storeImage;
-      Image.network(stores[i].logoString);
+     // Image.network(stores[i].logoString);
       Widget storeCard = Container(
           height: 88,
           width: double.infinity,

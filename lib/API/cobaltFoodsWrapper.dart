@@ -8,8 +8,9 @@ import 'package:deer_food/Objects/Store.dart';
 /// The REST API returns words that rhyme or are related to [Topic].
 class CobaltApi {
   static const String key = 'bylTKgsa08vezNaD8VVdwrfx5vqnXN48';
-  static const String keyParam = '/?key=' + key;
+  static const String keyParam = '?key=' + key;
 
+  static const Map<String, String> keymap = {'Authorization': key  };
   /// The API endpoint we want to hit.
   static const String _url = 'cobalt.qas.im/api/1.0/food';
   static const String prefixLimit = 'limit';
@@ -46,7 +47,7 @@ class CobaltApi {
 
   /// Returns a list. Returns null on error.
   Future<List<Store>> getFoodsJson() async {
-    final uri = 'https://' + _url + keyParam;
+    final uri = 'https://' + _url + keyParam + key;
     final jsonResponse = await _getJson(uri);
     List<Store> jsonList = List();
     if (jsonResponse != null) {
@@ -65,9 +66,10 @@ class CobaltApi {
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
     try {
-      final responseBody = (await http.get(url +
-              (limitString != null ? prefixLimit + '=' + (limitString) : '')))
-          .body;
+
+      final responseBody = (await http.get(url,headers: keymap )).body;
+              //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
+      print(responseBody);
       // Finally, the string is parsed into a JSON object.
       return json.decode(responseBody);
     } on Exception catch (e) {
