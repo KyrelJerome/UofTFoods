@@ -12,7 +12,7 @@ class CobaltApi {
 
   static const Map<String, String> keymap = {'Authorization': key  };
   /// The API endpoint we want to hit.
-  static const String _url = 'cobalt.qas.im/api/1.0/food';
+  static const String _url = 'cobalt.qas.im/api/1.0/food?limit=100';
   static const String prefixLimit = 'limit';
   static const String prefixSkip = 'skip';
   static const String prefixSort = 'sort';
@@ -47,7 +47,7 @@ class CobaltApi {
 
   /// Returns a list. Returns null on error.
   Future<List<Store>> getFoodsJson() async {
-    final uri = 'https://' + _url + keyParam + key;
+    final uri = 'https://' + _url;// + keyParam + key;
     final jsonResponse = await _getJson(uri);
     List<Store> jsonList = List();
     if (jsonResponse != null) {
@@ -70,8 +70,15 @@ class CobaltApi {
       final responseBody = (await http.get(url,headers: keymap )).body;
               //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
       print(responseBody);
+      var decodedJson = json.decode(responseBody);
+      if (decodedJson is List<dynamic>)
+      {
+        return json.decode(responseBody);
+      }
+      print('Query completed, but return value of wrong type:');
+      return List();
       // Finally, the string is parsed into a JSON object.
-      return json.decode(responseBody);
+      
     } on Exception catch (e) {
       print('$e');
       return null;
