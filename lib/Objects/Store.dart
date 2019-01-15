@@ -35,7 +35,7 @@ class Store {
       id: parsedJson['id'],
       buildingID: parsedJson['building_id'],
       name: parsedJson['name'],
-      logoString: parsedJson['logo'],
+      logoString: parsedJson['image'],
       shortName: parsedJson['short_name'],
       campus: parsedJson['campus'],
       lat: parsedJson['lat'],
