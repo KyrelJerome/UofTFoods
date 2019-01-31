@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
+
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -11,13 +12,17 @@ class FoodDisplayRoute extends StatefulWidget {
 }
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
+  static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
   List<Store> stores;
+  List<Store> filteredStores;
   List<String> filters;
+  int campus = 0;
   CobaltApi api;
   int openFilter;
   int tags;
   String building;
   DateTime date;
+
   void initState() {
     super.initState();
     api = CobaltApi();
@@ -26,10 +31,35 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     date = DateTime.now();
     loadUnfilteredStores();
   }
-  void loadUnfilteredStores() async{
-    List<Store> loadStream =  await api.getFoodsJson();
-    setState(() => (stores = loadStream));
+
+  void loadUnfilteredStores() async {
+    List<Store> loadStream = await api.getFoodsJson();
+    setState(() {
+      stores = loadStream;
+      updateFilteredStores();
+    });
   }
+
+  void updateFilteredStores() {
+    List<Store> tempStores = List();
+    stores.forEach((Store store) {
+      if (isStoreUnFiltered(store)) {
+        tempStores.add(store);
+      }
+    });
+    setState(() {
+      filteredStores = tempStores;
+    });
+  }
+
+  bool isStoreUnFiltered(Store store) {
+    if (campus != 0 && store.campus != campuses[campus - 1]) {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +105,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             ),
             Expanded(
               child: ListView(
-                children: buildActiveStoreWidgets(),
+                children: buildActiveStoreWidgets(filteredStores),
               ),
             ),
           ],
@@ -85,53 +115,46 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     );
   }
 
-  List<Widget> buildActiveStoreWidgets() {
+  List<Widget> buildActiveStoreWidgets(List<Store> stores) {
     List<Widget> storeCards = List();
     for (int i = 0; i < stores.length; i++) {
-      Image storeImage;
       Image.network(stores[i].logoString);
       Widget storeCard = Container(
-          height: 88,
-          width: double.infinity,
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(4),
-                width: 80,
-                height: 80,
-                child:Text("Placeholder"), // TODO: replace with: storeImage,
-              ),
-              Column(
+        height: 88,
+        width: double.infinity,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Row(
                 children: <Widget>[
-                  Text(
-                    stores[i].name,
-                    style: Theme.of(context).textTheme.title,
+                  Container(
+                    margin: EdgeInsets.all(4),
+                    width: 80,
+                    height: 80,
+                    child:
+                        Text("Placeholder"), // TODO: replace with: storeImage,
                   ),
-                  Text(
-                    stores[i].id,
-                    style: Theme.of(context).textTheme.subtitle,
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        stores[i].name,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Text(
+                        stores[i].id,
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ));
-        storeCards.add(storeCard);
+            ),
+          ],
+        ),
+      );
+      storeCards.add(storeCard);
     }
     return storeCards;
-  }
-
-  List<Widget> buildFiltersList() {
-    return [
-      Chip(
-        label: Text('Microwave'),
-      ),
-      Chip(
-        label: Text('Pizza'),
-      ),
-      Chip(
-        label: Text('Open'),
-      )
-    ];
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
@@ -155,7 +178,36 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     BottomNavigationBar nav = BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: items,
+      onTap: changeCampus,
     );
     return nav;
+  }
+
+  void changeCampus(int i) {
+    if (i != campus) {
+      setState(() {
+        campus = i;
+      });
+    }
+    updateFilteredStores();
+  }
+
+  List<Widget> buildTagsList(Store store) {
+    List<Widget> widgets = List();
+    store.tags.forEach((String tag) => widgets.add(Chip(label: Text(tag))));
+  }
+
+  List<Widget> buildFiltersList() {
+    return [
+      Chip(
+        label: Text('Microwave'),
+      ),
+      Chip(
+        label: Text('Pizza'),
+      ),
+      Chip(
+        label: Text('Open'),
+      )
+    ];
   }
 }

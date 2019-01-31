@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Hours.dart';
-  
+import 'dart:convert' show json;
+
 class Store {
   String id;
   String buildingID;
@@ -28,6 +29,7 @@ class Store {
     @required this.lng,
     @required this.website,
     @required this.address,
+    @required this.hours,
   });
 
   factory Store.fromJson(Map<String, String> parsedJson) {
@@ -42,6 +44,7 @@ class Store {
       lng: double.parse(parsedJson['lng']),
       address: parsedJson['address'],
       website: parsedJson['website'],
+      hours: Hours.fromJson(json.decode(parsedJson['hours'])),
     );
   }
 }
