@@ -27,6 +27,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     super.initState();
     api = CobaltApi();
     filters = List();
+    filteredStores = List();
     stores = List();
     date = DateTime.now();
     loadUnfilteredStores();
@@ -122,32 +123,26 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       Widget storeCard = Container(
         height: 88,
         width: double.infinity,
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(4),
-                    width: 80,
-                    height: 80,
-                    child:
-                        Text("Placeholder"), // TODO: replace with: storeImage,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        stores[i].name,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      Text(
-                        stores[i].id,
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            Container(
+              margin: EdgeInsets.all(4),
+              width: 80,
+              height: 80,
+              child:
+                  Text("Placeholder"), // TODO: replace with: storeImage,
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  stores[i].name,
+                  style: Theme.of(context).textTheme.title,
+                ),
+                Text(
+                  stores[i].id,
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+              ],
             ),
           ],
         ),

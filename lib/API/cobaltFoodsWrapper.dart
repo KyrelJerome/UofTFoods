@@ -68,6 +68,11 @@ class CobaltApi {
       final responseBody = (await http.get(url +
               (limitString != null ? prefixLimit + '=' + (limitString) : '')))
           .body;
+     if(responseBody ==  null)
+     {
+       return List();
+     }
+     print(responseBody);
       // Finally, the string is parsed into a JSON object.
       return json.decode(responseBody);
     } on Exception catch (e) {
