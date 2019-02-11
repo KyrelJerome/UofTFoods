@@ -24,6 +24,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   DateTime date;
 
   void initState() {
+    
+    print("Running init state");
     super.initState();
     api = CobaltApi();
     filters = List();
@@ -31,19 +33,25 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     stores = List();
     date = DateTime.now();
     loadUnfilteredStores();
+    
+    print("Ran init state");
   }
 
   void loadUnfilteredStores() async {
+    print("loading unfiltered stores");
     List<Store> loadStream = await api.getFoodsJson();
     setState(() {
       stores = loadStream;
       updateFilteredStores();
     });
+    loadUnfilteredStoreImages();
+
   }
 
   void updateFilteredStores() {
     List<Store> tempStores = List();
     stores.forEach((Store store) {
+     // print(store.id + "added to list");
       if (isStoreUnFiltered(store)) {
         tempStores.add(store);
       }
@@ -55,10 +63,27 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   bool isStoreUnFiltered(Store store) {
     if (campus != 0 && store.campus != campuses[campus - 1]) {
+     // print("Filtered store:" + store.id);
       return false;
     }
 
     return true;
+  }
+
+  void loadUnfilteredStoreImages() async {
+    List<Image> storeImages = List();
+    for (int i = 0; i < stores.length; i++) {
+      if (stores[i].logoString != null && stores[i].logoString != "") {
+        storeImages.add(Image.network(stores[i].logoString, height:80, width: 80, fit: BoxFit.fill));
+      } else {
+        storeImages.add(null);
+      }
+    }
+    setState(() {
+      for (int i = 0; i < stores.length; i++) {
+        stores[i].logo = storeImages[i];
+      }
+    });
   }
 
   @override
@@ -98,6 +123,13 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                       ),
                     ),
                   ),
+
+                  Center(
+                    child: IconButton(
+                      icon: Icon(Icons.filter_list),
+                      onPressed: loadUnfilteredStores,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -118,38 +150,55 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<Widget> buildActiveStoreWidgets(List<Store> stores) {
     List<Widget> storeCards = List();
-    for (int i = 0; i < stores.length; i++) {
-      Image.network(stores[i].logoString);
-      Widget storeCard = Container(
+    if (storeCards.length > 1) {
+      storeCards.add(buildStoreCard(stores[0]));
+    }
+    for (int i = 1; i < stores.length; i++) {
+      storeCards.add(Divider());
+      storeCards.add(buildStoreCard(stores[i]));
+    }
+    return storeCards;
+  }
+
+  Widget buildStoreCard(Store store) {
+    Image storeImage = store.logo;
+    String imageAlert = 'No image provided';
+    if (store != null && store.logoString != null && store.logoString != "") {
+      imageAlert = 'Image provided and found';
+    }
+
+    Widget storeCard = Container(
+        margin: EdgeInsets.all(8),
         height: 88,
         width: double.infinity,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
               margin: EdgeInsets.all(4),
               width: 80,
               height: 80,
-              child:
-                  Text("Placeholder"), // TODO: replace with: storeImage,
+              child: (storeImage ??
+                  Text(imageAlert)),
             ),
-            Column(
-              children: <Widget>[
-                Text(
-                  stores[i].name,
-                  style: Theme.of(context).textTheme.title,
-                ),
-                Text(
-                  stores[i].id,
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    store.name,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  Text(
+                    store.campus,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                 // Row(children: buildTagsList(store),)
+                ],
+              ),
             ),
           ],
-        ),
-      );
-      storeCards.add(storeCard);
-    }
-    return storeCards;
+        ));
+    return storeCard;
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
@@ -173,6 +222,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     BottomNavigationBar nav = BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: items,
+      currentIndex: campus,
       onTap: changeCampus,
     );
     return nav;
@@ -189,7 +239,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<Widget> buildTagsList(Store store) {
     List<Widget> widgets = List();
-    store.tags.forEach((String tag) => widgets.add(Chip(label: Text(tag))));
+    if(tags != null)
+    {
+    store.tags.forEach((dynamic tag) => widgets.add(Chip(label: Text((tag.toString())))));
+    print(tags);
+    }
+    return widgets;
   }
 
   List<Widget> buildFiltersList() {
