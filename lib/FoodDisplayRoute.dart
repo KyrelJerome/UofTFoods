@@ -103,7 +103,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(widget.margin),
+              margin: EdgeInsets.symmetric(horizontal: widget.margin),
               width: double.infinity,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,7 +111,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                   Container(
                     child: Text(
                       "Filters:",
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                   ),
                   Container(
@@ -169,7 +169,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
     Widget storeCard = Container(
         margin: EdgeInsets.all(8),
-        height: 88,
         width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

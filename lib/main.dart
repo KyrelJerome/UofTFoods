@@ -14,10 +14,11 @@ class MyApp extends StatelessWidget {
         // changing the primarySwatch below to Colors.green and then invoke
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or simply save your changes to "hot reload" in a Flutter IDE).
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
         brightness: Brightness.light
       ),
       home: FoodDisplayRoute(title: 'Deer Foods'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

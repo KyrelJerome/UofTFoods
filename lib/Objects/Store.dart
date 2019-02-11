@@ -12,13 +12,14 @@ class Store {
   String campus;
   String website;
   String address;
-
+  String description;
   List<dynamic> tags;
   Hours hours;
   double lat;
   double lng;
 
   Store({
+    @required this.description,
     @required this.id,
     @required this.buildingID,
     @required this.logoString,
@@ -29,15 +30,16 @@ class Store {
     @required this.lng,
     @required this.website,
     @required this.address,
-    @required this.hours,
+   // @required this.hours,
     @required this.tags,
   });
   factory Store.fromJson(Map<String, dynamic> parsedJson) {
     return Store(
+      description: parsedJson['description'],
       id: parsedJson['id'],
       buildingID: parsedJson['building_id'],
       name: parsedJson['name'],
-    //  tags: json.decode(parsedJson['tags']),
+      tags: parsedJson['tags'],
       logoString: parsedJson['image'],
       shortName: parsedJson['short_name'],
       campus: parsedJson['campus'],
