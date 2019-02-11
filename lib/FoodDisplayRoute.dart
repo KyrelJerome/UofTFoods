@@ -19,21 +19,21 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   int campus = 0;
   CobaltApi api;
   int openFilter;
-  int tags;
+  int tags = 1;
   String building;
   DateTime date;
 
   void initState() {
-    
     print("Running init state");
     super.initState();
+    tags = 0;
     api = CobaltApi();
     filters = List();
     filteredStores = List();
     stores = List();
     date = DateTime.now();
     loadUnfilteredStores();
-    
+
     print("Ran init state");
   }
 
@@ -45,13 +45,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       updateFilteredStores();
     });
     loadUnfilteredStoreImages();
-
   }
 
   void updateFilteredStores() {
     List<Store> tempStores = List();
     stores.forEach((Store store) {
-     // print(store.id + "added to list");
+      // print(store.id + "added to list");
       if (isStoreUnFiltered(store)) {
         tempStores.add(store);
       }
@@ -63,7 +62,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   bool isStoreUnFiltered(Store store) {
     if (campus != 0 && store.campus != campuses[campus - 1]) {
-     // print("Filtered store:" + store.id);
+      // print("Filtered store:" + store.id);
       return false;
     }
 
@@ -74,7 +73,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     List<Image> storeImages = List();
     for (int i = 0; i < stores.length; i++) {
       if (stores[i].logoString != null && stores[i].logoString != "") {
-        storeImages.add(Image.network(stores[i].logoString, height:80, width: 80, fit: BoxFit.fill));
+        storeImages.add(Image.network(
+          stores[i].logoString,
+          height: 80,
+          width: 80,
+          fit: BoxFit.fill,
+        ));
       } else {
         storeImages.add(null);
       }
@@ -123,7 +127,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                       ),
                     ),
                   ),
-
                   Center(
                     child: IconButton(
                       icon: Icon(Icons.filter_list),
@@ -163,8 +166,22 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   Widget buildStoreCard(Store store) {
     Image storeImage = store.logo;
     String imageAlert = 'No image provided';
+    Widget imageHolder; 
     if (store != null && store.logoString != null && store.logoString != "") {
       imageAlert = 'Image provided and found';
+    }
+    if(storeImage != null){
+      imageHolder = Ink(
+                width: 80.0,
+                height: 80.0,
+                child: InkWell(
+                  onTap: () {},
+                  child:    storeImage,
+                ),
+              );
+    }
+    else{
+      Text(imageAlert);
     }
 
     Widget storeCard = Container(
@@ -173,12 +190,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(4),
-              width: 80,
-              height: 80,
-              child: (storeImage ??
-                  Text(imageAlert)),
+            Material(
+              elevation: 4.0,
+              shape: CircleBorder(),
+              color: Colors.transparent,
+              child: imageHolder,
             ),
             Expanded(
               child: Column(
@@ -191,7 +207,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                     store.campus,
                     style: Theme.of(context).textTheme.subtitle,
                   ),
-                 // Row(children: buildTagsList(store),)
+                  Wrap(
+                    alignment: WrapAlignment.spaceAround,
+                    children: buildTagsList(store),
+                  ),
                 ],
               ),
             ),
@@ -237,13 +256,24 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   List<Widget> buildTagsList(Store store) {
+    //TODO: set a maximum character limit on tags and clean up tag presentation.
     List<Widget> widgets = List();
-    if(tags != null)
-    {
-    store.tags.forEach((dynamic tag) => widgets.add(Chip(label: Text((tag.toString())))));
-    print(tags);
+    //print("Building tags list");
+    if (1 != null) {
+      store.tags.forEach((dynamic tag) => widgets.add(
+            //Chip(
+            //  label:
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Text((tag.toString()),
+                  style: Theme.of(context).textTheme.caption
+                  //),
+                  ),
+            ),
+          ));
+      print(tags);
     }
-    return widgets;
+    return widgets; //.sublist(0);
   }
 
   List<Widget> buildFiltersList() {
