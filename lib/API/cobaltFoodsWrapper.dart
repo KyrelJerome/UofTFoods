@@ -11,8 +11,10 @@ class CobaltApi {
   static const String keyParam = '?key=' + key;
 
   static const Map<String, String> keymap = {'Authorization': key  };
+  static const Map<String, String> data = {'Authorization':key };
   /// The API endpoint we want to hit.
-  static const String _url = 'cobalt.qas.im/api/1.0/food?limit=100';
+  static const String _url = 'cobalt.qas.im/api/1.0/food';
+  static const String _defaultSuffix = '?limit=100';
   static const String prefixLimit = 'limit';
   static const String prefixSkip = 'skip';
   static const String prefixSort = 'sort';
@@ -47,7 +49,7 @@ class CobaltApi {
 
   /// Returns a list. Returns null on error.
   Future<List<Store>> getFoodsJson() async {
-    final uri = 'https://' + _url;// + keyParam + key;
+    final uri = 'https://' + _url + _defaultSuffix;// + keyParam + key;
     final jsonResponse = await _getJson(uri);
     List<Store> jsonList = List();
     if (jsonResponse != null) {
@@ -61,7 +63,22 @@ class CobaltApi {
     }
     return jsonList;
   }
-
+  Future<List<Store>> getFoodsJsonSpecific(int startIndex, int endIndex) async {
+    final uri = 'https://' + _url;// + keyParam + key;
+    http.post(uri,body: {"skip": startIndex.toString(),"limit":endIndex});
+    final jsonResponse = await _getJson(uri);
+    List<Store> jsonList = List();
+    if (jsonResponse != null) {
+      for (int i = 0; i < jsonResponse.length; i++) {
+        if (jsonResponse[i] == null) {
+          print('Error retrieving Store at index $i.');
+        } else {
+          jsonList.add(Store.fromJson(jsonResponse[i]));
+        }
+      }
+    }
+    return jsonList;
+  }
   /// Fetches and decodes a JSON object represented as a Dart [Map].
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
