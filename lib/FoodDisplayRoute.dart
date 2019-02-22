@@ -351,7 +351,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 }
 
 class StoreDialog extends StatelessWidget {
-  Store store;
+  final Store store;
   StoreDialog({
     @required this.store,
   });
