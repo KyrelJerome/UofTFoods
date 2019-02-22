@@ -52,7 +52,6 @@ class Store {
   }
   bool isOpen(){
     DateTime time = DateTime.now();
-    hours.hours[time.weekday.toString().toLowerCase()];
-    return true;
+     return hours.hours[time.weekday.toString().toLowerCase()]["closed"] == 0;
   }
 }

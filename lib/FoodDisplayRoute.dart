@@ -94,7 +94,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           ],
         ),
       ),
-      bottomNavigationBar: buildBottomNavigationBar(),
+      //bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 
@@ -198,32 +198,35 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     Widget storeCard = Container(
         margin: EdgeInsets.all(4),
         width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              child: imageHolder,
-              padding:EdgeInsets.all(4)
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    store.name,
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  Text(
-                    store.campus ?? "",
-                    style: Theme.of(context).textTheme.subtitle,
-                  ),
-                  Wrap(
-                    alignment: WrapAlignment.spaceAround,
-                    children: buildTagsList(store),
-                  ),
-                ],
+        child:InkWell(
+          onTap: ()=>{},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: imageHolder,
+                padding:EdgeInsets.all(4)
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      store.name,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    Text(
+                      store.campus ?? "",
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    Wrap(
+                      alignment: WrapAlignment.spaceAround,
+                      children: buildTagsList(store),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
     return storeCard;
   }
@@ -289,15 +292,21 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<Widget> buildFiltersList() {
     return [
-      Chip(
-        label: Text('Microwave'),
+      FilterChip(
+        label: Text('UTM'),
       ),
-      Chip(
-        label: Text('Pizza'),
+      FilterChip(
+        label: Text('UTSG'),
       ),
-      Chip(
+      
+      FilterChip(
+        label: Text('UTSC'),
+      ),
+      FilterChip(
         label: Text('Open'),
       )
     ];
   }
+  //Filter settings
+
 }

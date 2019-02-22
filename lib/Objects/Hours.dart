@@ -1,4 +1,3 @@
-import 'dart:convert' show json;
 import 'package:flutter/material.dart';
 
 class  Hours{
@@ -16,7 +15,7 @@ class  Hours{
     }
    );*/
    return Hours(hours: parsedJson);
-  }
+  }/*
   _getStartDateTimeJson(){
 
   }
@@ -31,5 +30,5 @@ class  Hours{
   }
   getEndDateTime(){
 
-  }
+  }*/
 }
