@@ -6,7 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Deer Food',
+      title: 'UofT Food',
       theme:
       ThemeData(
         // Try running your application with "flutter run". You'll see the
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         brightness: Brightness.light
       ),
-      home: FoodDisplayRoute(title: 'Deer Foods'),
+      home: FoodDisplayRoute(title: 'UofT Food'),
       debugShowCheckedModeBanner: false,
     );
   }

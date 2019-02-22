@@ -59,12 +59,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Filters:",
-                      style: Theme.of(context).textTheme.body1,
-                    ),
-                  ),
+                  // Container(
+                  //   child: Text(
+                  //     "Filters:",
+                  //     style: Theme.of(context).textTheme.body1,
+                  //   ),
+                  // ),
                   Container(
                     child: Expanded(
                       child: Wrap(
@@ -192,40 +192,43 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         ),
       );
     } else {
-      imageHolder = Text(imageAlert);
+      imageHolder = Container(
+        child: Center(child: Text(imageAlert)),
+        width: 80.0,
+        height: 80.0,
+      );
     }
 
     Widget storeCard = Container(
-        margin: EdgeInsets.all(4),
-        width: double.infinity,
-        child:InkWell(
-          onTap: ()=>{},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                child: imageHolder,
-                padding:EdgeInsets.all(4)
-              ),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      store.name,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    Text(
-                      store.campus ?? "",
-                      style: Theme.of(context).textTheme.subtitle,
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.spaceAround,
-                      children: buildTagsList(store),
-                    ),
-                  ],
+        child: InkWell(
+          onTap: () => {},
+          child: Container(
+            margin: EdgeInsets.all(4),
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(child: imageHolder, margin: EdgeInsets.all(4)),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        store.name,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Text(
+                        store.campus ?? "",
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.spaceAround,
+                        children: buildTagsList(store),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
     return storeCard;
@@ -268,42 +271,42 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   List<Widget> buildTagsList(Store store) {
-    //TODO: set a maximum character limit on tags and clean up tag presentation.
     List<Widget> widgets = List();
-    //print("Building tags list");
     if (store != null && store.tags != null) {
       int tagLength = 0;
-      for(int i = 0; i< store.tags.length && i < 4;  i ++){
-        tagLength = store.tags[i].toString().length;
+      for (int i = 0; i < store.tags.length && i < 4 && tagLength < 23; i++) {
+        tagLength += store.tags[i].toString().length;
         widgets.add(
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Text((store.tags[i].toString()),
-                  style: Theme.of(context).textTheme.caption
-                  ),
-            ),
-          );
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Text((store.tags[i].toString()),
+                style: Theme.of(context).textTheme.caption),
+          ),
+        );
       }
-      //store.tags.forEach((dynamic tag) => );
-      //print(tags);
     }
-    return widgets; //.sublist(0);
+    return widgets;
   }
 
   List<Widget> buildFiltersList() {
     return [
       FilterChip(
         label: Text('UTM'),
+        onSelected: (tap)=>{},
       ),
       FilterChip(
         label: Text('UTSG'),
+        onSelected: (tap)=>{},
       ),
-      
       FilterChip(
         label: Text('UTSC'),
+        onSelected: (tap)=>{},
+
       ),
       FilterChip(
         label: Text('Open'),
+        onSelected: (tap)=>{},
+
       )
     ];
   }
