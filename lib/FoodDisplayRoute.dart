@@ -15,6 +15,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
   List<Store> stores;
   List<Store> filteredStores;
+  List<bool> campusFilters = [true,true,true];
   List<String> filters;
   int campus = 0;
   CobaltApi api;
@@ -55,6 +56,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.symmetric(horizontal: widget.margin),
+              padding: EdgeInsets.symmetric(vertical: 0),
               width: double.infinity,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,10 +76,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                       ),
                     ),
                   ),
-                  Center(
-                    child: IconButton(
-                      icon: Icon(Icons.filter_list),
-                      onPressed: loadUnfilteredStores,
+                  Container(
+                    child: Center(
+                      child: IconButton(
+                        icon: Icon(Icons.filter_list),
+                        onPressed: loadUnfilteredStores,
+                      ),
                     ),
                   ),
                 ],
@@ -87,9 +91,14 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
               height: 0,
             ),
             Expanded(
-              child: ListView(
-                children: buildActiveStoreWidgets(filteredStores),
-              ),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: filteredStores.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildStoreCard(filteredStores[index]);
+                  }),
+              //children: buildActiveStoreWidgets(filteredStores),
             ),
           ],
         ),
@@ -126,21 +135,30 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       // print(store.id + "added to list");
       if (isStoreUnFiltered(store)) {
         tempStores.add(store);
+        print("Store added!");
       }
     });
     setState(() {
       filteredStores = tempStores;
     });
   }
-
-  bool isStoreUnFiltered(Store store) {
-    if (campus != 0 && store.campus != campuses[campus - 1]) {
-      // print("Filtered store:" + store.id);
-      return false;
+  bool isStoreUnFiltered(Store store){
+    for(int i = 0; i < campuses.length; i ++){
+      if(store.campus == campuses[i]){
+        print("Store campus found!");
+        return campusFilters[i];
+      }
     }
-    //while(int i = 0; i ++; i <)
-    return true;
+    return false;
   }
+  // bool isStoreUnFiltered(Store store) {
+  //   if (campus != 0 && store.campus != campuses[campus - 1]) {
+  //     // print("Filtered store:" + store.id);
+  //     return false;
+  //   }
+  //   //while(int i = 0; i ++; i <)
+  //   return true;
+  // }
 
   void loadUnfilteredStoreImages() async {
     List<Image> storeImages = List();
@@ -169,7 +187,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       storeCards.add(buildStoreCard(stores[0]));
     }
     for (int i = 1; i < stores.length; i++) {
-      storeCards.add(Divider());
+      storeCards.add(Divider(height: 0));
       storeCards.add(buildStoreCard(stores[i]));
     }
     return storeCards;
@@ -201,8 +219,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
     Widget storeCard = Container(
         child: InkWell(
-          onTap: () => {},
-          child: Container(
+      onTap: () => {},
+      child: Column(
+        children: <Widget>[
+          Container(
             margin: EdgeInsets.all(4),
             width: double.infinity,
             child: Row(
@@ -230,45 +250,56 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
               ],
             ),
           ),
-        ));
+          Divider(height: 0),
+        ],
+      ),
+    ));
     return storeCard;
   }
 
-  BottomNavigationBar buildBottomNavigationBar() {
-    List<BottomNavigationBarItem> items = List();
-    items.add(BottomNavigationBarItem(
-      icon: Icon(Icons.all_inclusive),
-      title: Text("All"),
-    ));
-    items.add(BottomNavigationBarItem(
-      icon: Icon(Icons.book),
-      title: Text("UTM"),
-    ));
-    items.add(BottomNavigationBarItem(
-      icon: Icon(Icons.book),
-      title: Text("UTSG"),
-    ));
-    items.add(BottomNavigationBarItem(
-      icon: Icon(Icons.book),
-      title: Text("UTSC"),
-    ));
-    BottomNavigationBar nav = BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: items,
-      currentIndex: campus,
-      onTap: changeCampus,
-    );
-    return nav;
-  }
-
-  void changeCampus(int i) {
-    if (i != campus) {
+  // BottomNavigationBar buildBottomNavigationBar() {
+  //   List<BottomNavigationBarItem> items = List();
+  //   items.add(BottomNavigationBarItem(
+  //     icon: Icon(Icons.all_inclusive),
+  //     title: Text("All"),
+  //   ));
+  //   items.add(BottomNavigationBarItem(
+  //     icon: Icon(Icons.book),
+  //     title: Text("UTM"),
+  //   ));
+  //   items.add(BottomNavigationBarItem(
+  //     icon: Icon(Icons.book),
+  //     title: Text("UTSG"),
+  //   ));
+  //   items.add(BottomNavigationBarItem(
+  //     icon: Icon(Icons.book),
+  //     title: Text("UTSC"),
+  //   ));
+  //   BottomNavigationBar nav = BottomNavigationBar(
+  //     type: BottomNavigationBarType.fixed,
+  //     items: items,
+  //     currentIndex: campus,
+  //     onTap: changeCampus,
+  //   );
+  //   return nav;
+  // }
+  
+  // void changeCampus(int i) {
+  //   if (i != campus) {
+  //     setState(() {
+  //       campus = i;
+  //     });
+  //   }
+  //   updateFilteredStores();
+  // }
+  
+  void changeCampusFilters(bool isFiltered, int i) {
       setState(() {
-        campus = i;
+        campusFilters[i] = isFiltered;
       });
-    }
     updateFilteredStores();
   }
+
 
   List<Widget> buildTagsList(Store store) {
     List<Widget> widgets = List();
@@ -289,26 +320,17 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   List<Widget> buildFiltersList() {
-    return [
-      FilterChip(
-        label: Text('UTM'),
-        onSelected: (tap)=>{},
-      ),
-      FilterChip(
-        label: Text('UTSG'),
-        onSelected: (tap)=>{},
-      ),
-      FilterChip(
-        label: Text('UTSC'),
-        onSelected: (tap)=>{},
-
-      ),
-      FilterChip(
-        label: Text('Open'),
-        onSelected: (tap)=>{},
-
-      )
-    ];
+    List<FilterChip> filters = List();
+    for (int i = 0; i < campuses.length; i++) {
+      filters.add(
+        FilterChip(
+          selected:campusFilters[i],
+          label: Text(campuses[i]),
+          onSelected:(tap)=>changeCampusFilters(tap, i),
+        ),
+      );
+    }
+    return filters;
   }
   //Filter settings
 
