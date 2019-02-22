@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Hours.dart';
-import 'dart:convert' show json;
+//import 'dart:convert' show json;
 
 class Store {
   String id;
@@ -49,5 +49,10 @@ class Store {
       website: parsedJson['website'],
      // hours: Hours.fromJson(json.decode(parsedJson['hours'])),
     );
+  }
+  bool isOpen(){
+    DateTime time = DateTime.now();
+    hours.hours[time.weekday.toString().toLowerCase()];
+    return true;
   }
 }

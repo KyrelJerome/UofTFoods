@@ -101,4 +101,29 @@ class CobaltApi {
       return null;
     }
   }
-}
+
+  // /// Fetches and decodes a JSON object represented as a Dart [Map].
+  // /// Returns null if the API server is down, or the response is not JSON.
+  // Future<List<dynamic>> _getJsonFiltered(String url, Map<String,String> filters) async {
+  //   try {
+
+
+  //     final responseBody = (await http.get(url,headers: keymap )).body;
+  //             //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
+  //     print(responseBody);
+  //     var decodedJson = json.decode(responseBody);
+  //     if (decodedJson is List<dynamic>)
+  //     {
+  //       return json.decode(responseBody);
+  //     }
+  //     print('Query completed, but return value of wrong type:');
+  //     return List();
+  //     // Finally, the string is parsed into a JSON object.
+      
+  //   } on Exception catch (e) {
+  //     print('$e');
+  //     return null;
+  //   }
+    
+
+  }
