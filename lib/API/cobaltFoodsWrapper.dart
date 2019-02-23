@@ -61,6 +61,9 @@ class CobaltApi {
         }
       }
     }
+    else{
+      return null;
+    }
     return jsonList;
   }
   Future<List<Store>> getFoodsJsonSpecific(int startIndex, int endIndex) async {

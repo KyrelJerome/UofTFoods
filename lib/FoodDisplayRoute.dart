@@ -40,6 +40,24 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   @override
   Widget build(BuildContext context) {
+    Widget dataWrapper;
+    if (filteredStores != null && filteredStores.length > 0) {
+      dataWrapper = Expanded(
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: filteredStores.length,
+            itemBuilder: (BuildContext context, int index) {
+              return buildStoreCard(filteredStores[index]);
+            }),
+      );
+    } else {
+      dataWrapper = Expanded(
+        child: Center(
+          child: Text("No Results Found"),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -53,6 +71,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           IconButton(
             icon: Icon(Icons.refresh),
             iconSize: 28,
+            tooltip: "Page refreshed!",
             padding: EdgeInsets.all(4),
             onPressed: loadUnfilteredStores,
           ),
@@ -69,12 +88,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  // Container(
-                  //   child: Text(
-                  //     "Filters:",
-                  //     style: Theme.of(context).textTheme.body1,
-                  //   ),
-                  // ),
                   Container(
                     child: Expanded(
                       child: Wrap(
@@ -98,20 +111,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Divider(
               height: 0,
             ),
-            Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: filteredStores.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return buildStoreCard(filteredStores[index]);
-                  }),
-              //children: buildActiveStoreWidgets(filteredStores),
-            ),
+            dataWrapper,
           ],
         ),
       ),
-      //bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 
@@ -119,22 +122,24 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     print("loading unfiltered stores");
     List<Store> loadStream = await api.getFoodsJson();
     //Capitalize every first letter of every tag on load, longer load time by 2n where n is the number of tags.
-    for (int i = 0; i < loadStream.length; i++) {
-      List<dynamic> tags = loadStream[i].tags;
-      if (tags != null) {
-        for (int j = 0; j < tags.length; j++) {
-          if (tags[j] != null && tags[j].toString().length > 0) {
-            tags[j] = tags[j].toString().substring(0, 1).toUpperCase() +
-                tags[j].toString().substring(1, tags[j].length);
+    if (loadStream != null) {
+      for (int i = 0; i < loadStream.length; i++) {
+        List<dynamic> tags = loadStream[i].tags;
+        if (tags != null) {
+          for (int j = 0; j < tags.length; j++) {
+            if (tags[j] != null && tags[j].toString().length > 0) {
+              tags[j] = tags[j].toString().substring(0, 1).toUpperCase() +
+                  tags[j].toString().substring(1, tags[j].length);
+            }
           }
         }
       }
-    }
-    setState(() {
-      stores = loadStream;
-      updateFilteredStores();
-    });
-    loadUnfilteredStoreImages();
+      setState(() {
+        stores = loadStream;
+        updateFilteredStores();
+      });
+      loadUnfilteredStoreImages();
+    } else {}
   }
 
   void updateFilteredStores() {
@@ -160,14 +165,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     }
     return false;
   }
-  // bool isStoreUnFiltered(Store store) {
-  //   if (campus != 0 && store.campus != campuses[campus - 1]) {
-  //     // print("Filtered store:" + store.id);
-  //     return false;
-  //   }
-  //   //while(int i = 0; i ++; i <)
-  //   return true;
-  // }
 
   void loadUnfilteredStoreImages() async {
     List<Image> storeImages = List();
@@ -243,6 +240,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                     children: <Widget>[
                       Text(
                         store.name,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.title,
                       ),
                       Text(
@@ -265,42 +263,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     ));
     return storeCard;
   }
-
-  // BottomNavigationBar buildBottomNavigationBar() {
-  //   List<BottomNavigationBarItem> items = List();
-  //   items.add(BottomNavigationBarItem(
-  //     icon: Icon(Icons.all_inclusive),
-  //     title: Text("All"),
-  //   ));
-  //   items.add(BottomNavigationBarItem(
-  //     icon: Icon(Icons.book),
-  //     title: Text("UTM"),
-  //   ));
-  //   items.add(BottomNavigationBarItem(
-  //     icon: Icon(Icons.book),
-  //     title: Text("UTSG"),
-  //   ));
-  //   items.add(BottomNavigationBarItem(
-  //     icon: Icon(Icons.book),
-  //     title: Text("UTSC"),
-  //   ));
-  //   BottomNavigationBar nav = BottomNavigationBar(
-  //     type: BottomNavigationBarType.fixed,
-  //     items: items,
-  //     currentIndex: campus,
-  //     onTap: changeCampus,
-  //   );
-  //   return nav;
-  // }
-
-  // void changeCampus(int i) {
-  //   if (i != campus) {
-  //     setState(() {
-  //       campus = i;
-  //     });
-  //   }
-  //   updateFilteredStores();
-  // }
 
   void changeCampusFilters(bool isFiltered, int i) {
     setState(() {
@@ -367,17 +329,10 @@ class StoreDialog extends StatelessWidget {
       imageHolder = Ink(
         width: 160.0,
         height: 160.0,
-        child: InkWell(
-          onTap: () {},
-          child: storeImage,
-        ),
+        child: storeImage,
       );
     } else {
-      imageHolder = Container(
-        child: Center(child: Text(imageAlert)),
-        width: 160.0,
-        height: 160.0,
-      );
+      imageHolder = null;
     }
     return Dialog(
       child: Container(
@@ -389,6 +344,7 @@ class StoreDialog extends StatelessWidget {
             Center(
               child: new Text(
                 store.name.toString(),
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.title,
               ),
             ),
@@ -398,11 +354,19 @@ class StoreDialog extends StatelessWidget {
                 child: imageHolder,
               ),
             ),
-            //Center(child: Text("Tags", style: Theme.of(context).textTheme.subtitle)),
+            Center(
+              child: Text(store.description,
+                  textAlign: TextAlign.center,
+                  maxLines: 7,
+                  style: Theme.of(context).textTheme.body1),
+            ),
+            Text("Location", style: Theme.of(context).textTheme.subtitle),
+            Text(store.address, style: Theme.of(context).textTheme.body1),
+            Divider(),
             Center(
               child: Wrap(
                 spacing: 4.0,
-                alignment:WrapAlignment.center,
+                alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: buildTagsList(store, context),
               ),
@@ -417,7 +381,7 @@ class StoreDialog extends StatelessWidget {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
       int tagLength = 0;
-      for (int i = 0; i < store.tags.length && i < 10 && tagLength < 50; i++) {
+      for (int i = 0; i < store.tags.length && i < 5 && tagLength < 50; i++) {
         tagLength += store.tags[i].toString().length;
         widgets.add(
           Chip(
