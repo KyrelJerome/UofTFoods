@@ -17,10 +17,11 @@ A Flutter Mobile App designed to aid UofT Students easily find food options on c
 
 
 ## App Development Progression
+
 ### V0.3
 
-![Screenshot of menu](DevLog/2019-02-08.png=250x250 "Main Menu")
+![Screenshot of menu](DevLog/2019-02-08.png "Main Menu")
 
 ### V0.9 
-![Screenshot of menu](DevLog/2019-02-22one.png=250x250 "Main Menu")
-![Screenshot of dialog](DevLog/2019-02-22two.png=250x250 "Main Menu")
+![Screenshot of menu](DevLog/2019-02-22two.png "Menu")
+![Screenshot of dialog](DevLog/2019-02-22one.png "Dialog")
