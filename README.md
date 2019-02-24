@@ -5,6 +5,7 @@ A new Flutter Mobile App designed to aid UofT Students easily find food options 
 ## Features
 - Campus Selection Filters
 - Store Tags
+
 ## Coming soon
 - Store hours
 - Is Open
@@ -19,6 +20,5 @@ A new Flutter Mobile App designed to aid UofT Students easily find food options 
 ### Campus Selection
 ### Filters
 Filtering options by "open", 
-
 -->
 
