@@ -48,7 +48,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             shrinkWrap: true,
             itemCount: filteredStores.length,
             itemBuilder: (BuildContext context, int index) {
-              return buildStoreCard(filteredStores[index]);
+              return StoreCard(store:filteredStores[index]);
             }),
       );
     } else {
@@ -187,83 +187,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     });
   }
 
-  List<Widget> buildActiveStoreWidgets(List<Store> stores) {
-    List<Widget> storeCards = List();
-    if (storeCards.length > 1) {
-      storeCards.add(buildStoreCard(stores[0]));
-    }
-    for (int i = 1; i < stores.length; i++) {
-      storeCards.add(Divider(height: 0));
-      storeCards.add(buildStoreCard(stores[i]));
-    }
-    return storeCards;
-  }
-
-  Widget buildStoreCard(Store store) {
-    Image storeImage = store.logo;
-    String imageAlert = 'No Image Provided';
-    Widget imageHolder;
-    if (store != null && store.logoString != null && store.logoString != "") {
-      imageAlert = 'Image provided and found';
-    }
-    if (storeImage != null) {
-      imageHolder = Ink(
-        width: 80.0,
-        height: 80.0,
-        child: InkWell(
-          onTap: () {},
-          child: storeImage,
-        ),
-      );
-    } else {
-      imageHolder = Container(
-        child: Center(child: Text(imageAlert)),
-        width: 80.0,
-        height: 80.0,
-      );
-    }
-
-    Widget storeCard = Container(
-        child: InkWell(
-      onTap: () => _showStoreDialog(store),
-      child: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(4),
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(child: imageHolder, margin: EdgeInsets.all(4)),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        store.name,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      Text(
-                        store.campus ?? "",
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.spaceAround,
-                        children: buildTagsList(store),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(height: 0),
-        ],
-      ),
-    ));
-    return storeCard;
-  }
-
   void changeCampusFilters(bool isFiltered, int i) {
     setState(() {
       campusFilters[i] = isFiltered;
@@ -271,24 +194,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     updateFilteredStores();
   }
 
-  List<Widget> buildTagsList(Store store) {
-    List<Widget> widgets = List();
-    if (store != null && store.tags != null) {
-      int tagLength = 0;
-      for (int i = 0; i < store.tags.length && i < 4 && tagLength < 23; i++) {
-        tagLength += store.tags[i].toString().length;
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
-            child: Text((store.tags[i].toString()),
-                style: Theme.of(context).textTheme.caption),
-          ),
-        );
-      }
-    }
-    return widgets;
-  }
-
+ 
   List<Widget> buildFiltersList() {
     List<FilterChip> filters = List();
     for (int i = 0; i < campuses.length; i++) {
@@ -301,14 +207,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       );
     }
     return filters;
-  }
-
-  void _showStoreDialog(Store store) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StoreDialog(store: store);
-        });
   }
 }
 
@@ -392,5 +290,108 @@ class StoreDialog extends StatelessWidget {
       }
     }
     return widgets;
+  }
+}
+
+class StoreCard extends StatefulWidget {
+  Store store;
+  StoreCard({@required this.store});
+
+  _StoreCardState createState() => _StoreCardState(store:store);
+  
+}
+
+class _StoreCardState extends State<StoreCard> {
+  Store store;
+  _StoreCardState({@required this.store});
+  @override
+  Widget build(BuildContext context) {
+      Image storeImage = store.logo;
+      String imageAlert = 'No Image Provided';
+      Widget imageHolder;
+      if (store != null && store.logoString != null && store.logoString != "") {
+        imageAlert = 'Image provided and found';
+      }
+      if (storeImage != null) {
+        imageHolder = Ink(
+          width: 80.0,
+          height: 80.0,
+          child: InkWell(
+            onTap: () {},
+            child: storeImage,
+          ),
+        );
+      } else {
+        imageHolder = Container(
+          child: Center(child: Text(imageAlert)),
+          width: 80.0,
+          height: 80.0,
+        );
+      }
+
+      Widget storeCard = Container(
+          child: InkWell(
+        onTap: () => _showStoreDialog(store),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(4),
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(child: imageHolder, margin: EdgeInsets.all(4)),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          store.name,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Text(
+                          store.campus ?? "",
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                        Wrap(
+                          alignment: WrapAlignment.spaceAround,
+                          children: buildTagsList(store),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(height: 0),
+          ],
+        ),
+      ));
+      return storeCard;
+  }
+   List<Widget> buildTagsList(Store store) {
+    List<Widget> widgets = List();
+    if (store != null && store.tags != null) {
+      int tagLength = 0;
+      for (int i = 0; i < store.tags.length && i < 4 && tagLength < 23; i++) {
+        tagLength += store.tags[i].toString().length;
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Text((store.tags[i].toString()),
+                style: Theme.of(context).textTheme.caption),
+          ),
+        );
+      }
+    }
+    return widgets;
+  }
+
+   void _showStoreDialog(Store store) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StoreDialog(store: store);
+        });
   }
 }
