@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
-import 'package:deer_food/Objects/Hours.dart';
 import 'package:deer_food/Objects/Store.dart';
 
 ///

@@ -218,11 +218,7 @@ class StoreDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Image storeImage = store.logo;
-    String imageAlert = 'No Image Provided';
     Widget imageHolder;
-    if (store != null && store.logoString != null && store.logoString != "") {
-      imageAlert = 'Image provided and found';
-    }
     if (storeImage != null) {
       imageHolder = Ink(
         width: 160.0,
@@ -294,7 +290,7 @@ class StoreDialog extends StatelessWidget {
 }
 
 class StoreCard extends StatefulWidget {
-  Store store;
+  final Store store;
   StoreCard({@required this.store});
 
   _StoreCardState createState() => _StoreCardState(store:store);
