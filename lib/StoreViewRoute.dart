@@ -12,61 +12,88 @@ class StoreViewRoute extends StatelessWidget {
     Widget imageHolder;
     if (storeImage != null) {
       imageHolder = Ink(
-        width: 160.0,
-        height: 160.0,
+        width: double.infinity,
+        height: 200.0,
         child: storeImage,
       );
     } else {
       imageHolder = null;
     }
+    Widget hourObject = Text("");
+    if(store.hours != null && store.hours.hours != null){
+      print(store.hours.hours.toString());
+      hourObject = Text(store.hours.hours.toString());
+    }
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {Navigator.of(context).pop();},
-      )),
-      body: Container(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(
-              child: new Text(
-                store.name.toString(),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.title,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  child: imageHolder,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: new Text(
+                          store.name.toString().trim(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 4),
+                        child: Text(store.description.trim(),
+                              textAlign: TextAlign.center,
+                              maxLines: 7,
+                              style: Theme.of(context).textTheme.body1),
+                      ),
+                      Divider(),
+                      Text("Location",
+                          style: Theme.of(context).textTheme.subtitle),
+                      Text(store.address,
+                          style: Theme.of(context).textTheme.body1),
+                      Divider(),
+                      hourObject,
+                      Divider(),
+                        Text(store.hours.toString(),
+                          style: Theme.of(context).textTheme.body1),
+                      Center(
+                        child: Wrap(
+                          spacing: 4.0,
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: buildTagsList(store, context),
+                        ),
+                      ),
+                    ]),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.all(4),
-                child: imageHolder,
-              ),
-            ),
-            Center(
-              child: Text(store.description,
-                  textAlign: TextAlign.center,
-                  maxLines: 7,
-                  style: Theme.of(context).textTheme.body1),
-            ),
-            Text("Location", style: Theme.of(context).textTheme.subtitle),
-            Text(store.address, style: Theme.of(context).textTheme.body1),
-            Divider(),
-            Center(
-              child: Wrap(
-                spacing: 4.0,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: buildTagsList(store, context),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-  
+
   List<Widget> buildTagsList(Store store, BuildContext context) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {

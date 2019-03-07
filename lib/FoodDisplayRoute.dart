@@ -3,6 +3,7 @@ import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
 import 'StoreViewRoute.dart';
+
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -16,7 +17,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> stores;
   List<Store> filteredStores;
   List<bool> campusFilters = [true, true, true];
-  List<String> filters;
+  List<String> filters = [
+    "Open",
+    "Microwave",
+  ]; // Open // Building //
   int campus = 0;
   CobaltApi api;
   int openFilter;
@@ -48,7 +52,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             shrinkWrap: true,
             itemCount: filteredStores.length,
             itemBuilder: (BuildContext context, int index) {
-              return StoreCard(store:filteredStores[index]);
+              return StoreCard(store: filteredStores[index]);
             }),
       );
     } else {
@@ -194,7 +198,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     updateFilteredStores();
   }
 
- 
   List<Widget> buildFiltersList() {
     List<FilterChip> filters = List();
     for (int i = 0; i < campuses.length; i++) {
@@ -270,6 +273,7 @@ class StoreDialog extends StatelessWidget {
       ),
     );
   }
+
   List<Widget> buildTagsList(Store store, BuildContext context) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
@@ -292,8 +296,7 @@ class StoreCard extends StatefulWidget {
   final Store store;
   StoreCard({@required this.store});
 
-  _StoreCardState createState() => _StoreCardState(store:store);
-  
+  _StoreCardState createState() => _StoreCardState(store: store);
 }
 
 class _StoreCardState extends State<StoreCard> {
@@ -301,71 +304,75 @@ class _StoreCardState extends State<StoreCard> {
   _StoreCardState({@required this.store});
   @override
   Widget build(BuildContext context) {
-      Image storeImage = store.logo;
-      String imageAlert = 'No Image Provided';
-      Widget imageHolder;
-      if (store != null && store.logoString != null && store.logoString != "") {
-        imageAlert = 'Image provided and found';
-      }
-      if (storeImage != null) {
-        imageHolder = Ink(
-          width: 80.0,
-          height: 80.0,
-          child: InkWell(
-            onTap: () {},
-            child: storeImage,
-          ),
-        );
-      } else {
-        imageHolder = Container(
-          child: Center(child: Text(imageAlert)),
-          width: 80.0,
-          height: 80.0,
-        );
-      }
-
-      Widget storeCard = Container(
-          child: InkWell(
-        onTap: () => Navigator.push(context,
-        MaterialPageRoute(builder: (context) => StoreViewRoute(store: store)),),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(4),
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(child: imageHolder, margin: EdgeInsets.all(4)),
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          store.name,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Text(
-                          store.campus ?? "",
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                        Wrap(
-                          alignment: WrapAlignment.spaceAround,
-                          children: buildTagsList(store),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Divider(height: 0),
-          ],
+    Image storeImage = store.logo;
+    String imageAlert = 'No Image Provided';
+    Widget imageHolder;
+    if (store != null && store.logoString != null && store.logoString != "") {
+      imageAlert = 'Image provided and found';
+    }
+    if (storeImage != null) {
+      imageHolder = Ink(
+        width: 80.0,
+        height: 80.0,
+        child: InkWell(
+          onTap: () {},
+          child: storeImage,
         ),
-      ));
-      return storeCard;
+      );
+    } else {
+      imageHolder = Container(
+        child: Center(child: Text(imageAlert)),
+        width: 80.0,
+        height: 80.0,
+      );
+    }
+
+    Widget storeCard = Container(
+        child: InkWell(
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StoreViewRoute(store: store)),
+          ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(4),
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(child: imageHolder, margin: EdgeInsets.all(4)),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        store.name,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Text(
+                        store.campus ?? "",
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.spaceAround,
+                        children: buildTagsList(store),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(height: 0),
+        ],
+      ),
+    ));
+    return storeCard;
   }
-   List<Widget> buildTagsList(Store store) {
+
+  List<Widget> buildTagsList(Store store) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
       int tagLength = 0;
@@ -383,7 +390,7 @@ class _StoreCardState extends State<StoreCard> {
     return widgets;
   }
 
-   void _showStoreDialog(Store store) {
+  void _showStoreDialog(Store store) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -391,15 +398,35 @@ class _StoreCardState extends State<StoreCard> {
         });
   }
 }
+
 class FilterDialog extends StatelessWidget {
   final Widget child;
 
- FilterDialog({Key key, this.child}) : super(key: key);
+  FilterDialog({Key key, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: child,
+      child: Container(
+        child: Column(children: <Widget>[Row(
+          children: <Widget>[
+            Text("Campuses"),
+          ],
+        ),Divider(),],),
+      ),
     );
+  }
+  List<Widget> buildCampusList() {
+    List<FilterChip> filters = List();
+    /*for (int i = 0; i < campuses.length; i++) {
+      filters.add(
+        FilterChip(
+          selected: campusFilters[i],
+          label: Text(campuses[i]),
+          onSelected: (tap) => changeCampusFilters(tap, i),
+        ),
+      );
+    }*/
+    return filters;
   }
 }
