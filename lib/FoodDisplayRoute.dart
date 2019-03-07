@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
-
+import 'StoreViewRoute.dart';
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -270,7 +270,6 @@ class StoreDialog extends StatelessWidget {
       ),
     );
   }
-
   List<Widget> buildTagsList(Store store, BuildContext context) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
@@ -327,7 +326,8 @@ class _StoreCardState extends State<StoreCard> {
 
       Widget storeCard = Container(
           child: InkWell(
-        onTap: () => _showStoreDialog(store),
+        onTap: () => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => StoreViewRoute(store: store)),),
         child: Column(
           children: <Widget>[
             Container(
@@ -389,5 +389,17 @@ class _StoreCardState extends State<StoreCard> {
         builder: (BuildContext context) {
           return StoreDialog(store: store);
         });
+  }
+}
+class FilterDialog extends StatelessWidget {
+  final Widget child;
+
+ FilterDialog({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: child,
+    );
   }
 }
