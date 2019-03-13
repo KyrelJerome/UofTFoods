@@ -311,12 +311,15 @@ class _StoreCardState extends State<StoreCard> {
       imageAlert = 'Image provided and found';
     }
     if (storeImage != null) {
-      imageHolder = Ink(
-        width: 80.0,
-        height: 80.0,
-        child: InkWell(
-          onTap: () {},
-          child: storeImage,
+      Hero(
+        tag: store.hashCode,
+        child: imageHolder = Ink(
+          width: 80.0,
+          height: 80.0,
+          child: InkWell(
+            onTap: () {},
+            child: storeImage,
+          ),
         ),
       );
     } else {
@@ -329,10 +332,10 @@ class _StoreCardState extends State<StoreCard> {
 
     Widget storeCard = Container(
         child: InkWell(
-      onTap: () => Navigator.push(
+      onTap: () => Navigator.push(   
             context,
-            MaterialPageRoute(
-                builder: (context) => StoreViewRoute(store: store)),
+          MaterialPageRoute(
+                builder: (context) => Hero(tag: hashCode,child:  StoreViewRoute(store: store))),
           ),
       child: Column(
         children: <Widget>[
@@ -408,14 +411,20 @@ class FilterDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Container(
-        child: Column(children: <Widget>[Row(
+        child: Column(
           children: <Widget>[
-            Text("Campuses"),
+            Row(
+              children: <Widget>[
+                Text("Campuses"),
+              ],
+            ),
+            Divider(),
           ],
-        ),Divider(),],),
+        ),
       ),
     );
   }
+
   List<Widget> buildCampusList() {
     List<FilterChip> filters = List();
     /*for (int i = 0; i < campuses.length; i++) {
