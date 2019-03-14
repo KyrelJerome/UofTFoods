@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class  Hours{
   //TODO add make formatting system, setters, getters, and whatever is required for "open, etc".
-  Map<String, Map<String,int>> hours;
-  
+  dynamic hours;
+
   Hours({
     @required this.hours,
   });

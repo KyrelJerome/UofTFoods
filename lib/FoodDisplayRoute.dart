@@ -389,7 +389,7 @@ class _StoreCardState extends State<StoreCard> {
     }
     return widgets;
   }
-
+  //Deprecated
   void _showStoreDialog(Store store) {
     showDialog(
         context: context,

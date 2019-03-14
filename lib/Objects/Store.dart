@@ -30,7 +30,7 @@ class Store {
     @required this.lng,
     @required this.website,
     @required this.address,
-   // @required this.hours,
+    @required this.hours,
     @required this.tags,
   });
   factory Store.fromJson(Map<String, dynamic> parsedJson) {
@@ -47,7 +47,7 @@ class Store {
       lng: parsedJson['lng'],
       address: parsedJson['address'],
       website: parsedJson['website'],
-     // hours: Hours.fromJson(json.decode(parsedJson['hours'])),
+      hours: Hours(hours: parsedJson['hours']),
     );
   }
   bool isOpen(){

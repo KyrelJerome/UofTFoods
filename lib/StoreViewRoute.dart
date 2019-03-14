@@ -3,6 +3,16 @@ import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
 
+const weekdays = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
+];
+
 class StoreViewRoute extends StatelessWidget {
   final Store store;
   StoreViewRoute({this.store});
@@ -19,10 +29,25 @@ class StoreViewRoute extends StatelessWidget {
     } else {
       imageHolder = null;
     }
-    Widget hourObject = Text("");
+    Widget hourObject = Text("hours");
     if (store.hours != null && store.hours.hours != null) {
       print(store.hours.hours.toString());
-      hourObject = Text(store.hours.hours.toString());
+      List<Widget> hourList = [];
+      dynamic hours = store.hours.hours;
+      weekdays.forEach(
+        (f) {
+          hourList.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(f.substring(0, 1).toUpperCase() + f.substring(1)),
+              Text((hours[f]["open"]/3600).floor().toString() + " - " + (hours[f]["close"]/3600).floor().toString()),
+            ],
+          ));
+        },
+      );
+      hourObject = Column(
+        children: hourList,
+      );
     }
     return Scaffold(
       body: Stack(
@@ -67,8 +92,6 @@ class StoreViewRoute extends StatelessWidget {
                       Divider(),
                       hourObject,
                       Divider(),
-                      Text(store.hours.toString(),
-                          style: Theme.of(context).textTheme.body1),
                       Center(
                         child: Wrap(
                           spacing: 4.0,
