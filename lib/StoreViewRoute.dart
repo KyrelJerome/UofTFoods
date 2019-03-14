@@ -11,7 +11,7 @@ class StoreViewRoute extends StatelessWidget {
     Image storeImage = store.logo;
     Widget imageHolder;
     if (storeImage != null) {
-      imageHolder = Ink(
+      imageHolder = Container(
         width: double.infinity,
         height: 200.0,
         child: storeImage,
@@ -20,7 +20,7 @@ class StoreViewRoute extends StatelessWidget {
       imageHolder = null;
     }
     Widget hourObject = Text("");
-    if(store.hours != null && store.hours.hours != null){
+    if (store.hours != null && store.hours.hours != null) {
       print(store.hours.hours.toString());
       hourObject = Text(store.hours.hours.toString());
     }
@@ -33,7 +33,10 @@ class StoreViewRoute extends StatelessWidget {
             children: <Widget>[
               Center(
                 child: Container(
-                  child: imageHolder,
+                  child: Hero(
+                    tag: store.hashCode,
+                    child: imageHolder,
+                  ),
                 ),
               ),
               Container(
@@ -52,9 +55,9 @@ class StoreViewRoute extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: 4),
                         child: Text(store.description.trim(),
-                              textAlign: TextAlign.center,
-                              maxLines: 7,
-                              style: Theme.of(context).textTheme.body1),
+                            textAlign: TextAlign.center,
+                            maxLines: 7,
+                            style: Theme.of(context).textTheme.body1),
                       ),
                       Divider(),
                       Text("Location",
@@ -64,7 +67,7 @@ class StoreViewRoute extends StatelessWidget {
                       Divider(),
                       hourObject,
                       Divider(),
-                        Text(store.hours.toString(),
+                      Text(store.hours.toString(),
                           style: Theme.of(context).textTheme.body1),
                       Center(
                         child: Wrap(
