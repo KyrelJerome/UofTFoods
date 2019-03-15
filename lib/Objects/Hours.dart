@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class  Hours{
-  //TODO add make formatting system, setters, getters, and whatever is required for "open, etc".
   dynamic hours;
 
   Hours({
@@ -9,26 +8,6 @@ class  Hours{
   });
 
   factory Hours.fromJson(Map<String, dynamic> parsedJson){
-   /*parsedJson.forEach((String day, dynamic)
-    {
-      Map<String, int> temp = json.decode(parsedJson[day]);
-    }
-   );*/
    return Hours(hours: parsedJson);
-  }/*
-  _getStartDateTimeJson(){
-
   }
-  _getEndDateTimeJson(){
-
-  }
-  _getDayJson(){
-
-  }
-  getStartDateTime(){
-    //return
-  }
-  getEndDateTime(){
-
-  }*/
 }

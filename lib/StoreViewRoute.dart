@@ -23,7 +23,7 @@ class StoreViewRoute extends StatelessWidget {
     if (storeImage != null) {
       imageHolder = Container(
         width: double.infinity,
-        height: 200.0,
+        height: 180.0,
         child: storeImage,
       );
     } else {
@@ -34,13 +34,30 @@ class StoreViewRoute extends StatelessWidget {
       print(store.hours.hours.toString());
       List<Widget> hourList = [];
       dynamic hours = store.hours.hours;
+      bool currentDay = hours[weekdays[DateTime.now().weekday]]["closed"];
+      if (!currentDay) {
+        hourList.add(
+          Center(
+            child: Chip(label: Text("Open"), backgroundColor: Colors.green),
+          ),
+        );
+      } else {
+        hourList.add(
+          Center(
+            child: Chip(label:Text("Closed"), backgroundColor: Colors.red,),
+          ),
+        );
+      }
       weekdays.forEach(
         (f) {
           hourList.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(f.substring(0, 1).toUpperCase() + f.substring(1)),
-              Text((hours[f]["open"]/3600).floor().toString() + " - " + (hours[f]["close"]/3600).floor().toString()),
+              Text(f.substring(0, 1).toUpperCase() + f.substring(1),
+                  style: Theme.of(context).textTheme.subtitle),
+              Text((hours[f]["open"] / 3600).floor().toString() +
+                  " - " +
+                  (hours[f]["close"] / 3600).floor().toString()),
             ],
           ));
         },
@@ -53,7 +70,7 @@ class StoreViewRoute extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Center(
@@ -65,10 +82,12 @@ class StoreViewRoute extends StatelessWidget {
                 ),
               ),
               Container(
+                width: double.infinity,
+                height: double.infinity,
                 margin: EdgeInsets.all(8.0),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
+                  //  mainAxisSize: MainAxisSize.min,
+                  //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Center(
                         child: new Text(
