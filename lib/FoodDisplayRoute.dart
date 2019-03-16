@@ -16,6 +16,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
   List<Store> stores;
   List<Store> filteredStores;
+  final TextEditingController _filter = new TextEditingController();
+  Widget _appBarTitle;
+  Icon _searchIcon;
+  String _searchText;
   List<bool> campusFilters = [true, true, true];
   List<String> filters = [
     "Open",
@@ -37,8 +41,23 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     filteredStores = List();
     stores = List();
     date = DateTime.now();
-    loadUnfilteredStores();
 
+    loadUnfilteredStores();
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          updateFilteredStores();
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+          updateFilteredStores();
+        });
+      }
+    });
+    _searchIcon = Icon(Icons.search);
+    _appBarTitle = Center(child: Text(widget.title));
     print("Ran init state");
   }
 
@@ -64,14 +83,15 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: _appBarTitle,
+        leading: IconButton(
+          icon: _searchIcon,
+          iconSize: 28,
+          tooltip: "Search",
+          padding: EdgeInsets.all(4),
+          onPressed: _searchPressed,
+        ),
         actions: <Widget>[
-          IconButton(
-            iconSize: 28,
-            icon: Icon(Icons.search),
-            padding: EdgeInsets.all(4),
-            onPressed: () {},
-          ),
           IconButton(
             icon: Icon(Icons.refresh),
             iconSize: 28,
@@ -122,6 +142,26 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     );
   }
 
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: _filter,
+          style: TextStyle(color: Colors.white),
+          decoration: new InputDecoration(
+            hintText: 'Search...',
+          ),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text(widget.title);
+        // filteredNames = names;
+        _filter.clear();
+      }
+    });
+  }
+
   void loadUnfilteredStores() async {
     print("loading unfiltered stores");
     List<Store> loadStream = await api.getFoodsJson();
@@ -147,12 +187,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void updateFilteredStores() {
+    print("Updating Filtering stores");
     List<Store> tempStores = List();
     stores.forEach((Store store) {
-      // print(store.id + "added to list");
-      if (isStoreUnFiltered(store)) {
+      if (!isStoreFiltered(store)) {
         tempStores.add(store);
-        print("Store added!");
       }
     });
     setState(() {
@@ -160,13 +199,29 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     });
   }
 
-  bool isStoreUnFiltered(Store store) {
+  bool isStoreFiltered(Store store) {
     for (int i = 0; i < campuses.length; i++) {
       if (store.campus == campuses[i]) {
-        print("Store campus found!");
-        return campusFilters[i];
+        if (!campusFilters[i]) {
+          print("Do not add Store: " + store.name + "| At: " + store.campus);
+          return true;
+        }
       }
     }
+    String text = _searchText;
+    if (text != null && text != "") {
+      text = text.toLowerCase();
+      if (store.name.toLowerCase().contains(text) ||
+          store.description.toLowerCase().contains(text)) {
+        print(text + " : add Store: " + store.name);
+        return false;
+      } else {
+        print(text + ": filter store: " + store.name);
+
+        return true;
+      }
+    }
+    print("(null or empty search)add store: " + store.name);
     return false;
   }
 
@@ -194,6 +249,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void changeCampusFilters(bool isFiltered, int i) {
     setState(() {
       campusFilters[i] = isFiltered;
+      print(isFiltered.toString() + "Campus : " + i.toString());
     });
     updateFilteredStores();
   }
@@ -210,68 +266,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       );
     }
     return filters;
-  }
-}
-
-class StoreDialog extends StatelessWidget {
-  final Store store;
-  StoreDialog({
-    @required this.store,
-  });
-  @override
-  Widget build(BuildContext context) {
-    Image storeImage = store.logo;
-    Widget imageHolder;
-    if (storeImage != null) {
-      imageHolder = Ink(
-        width: 160.0,
-        height: 160.0,
-        child: storeImage,
-      );
-    } else {
-      imageHolder = null;
-    }
-    return Dialog(
-      child: Container(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(
-              child: new Text(
-                store.name.toString(),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.title,
-              ),
-            ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.all(4),
-                child: imageHolder,
-              ),
-            ),
-            Center(
-              child: Text(store.description,
-                  textAlign: TextAlign.center,
-                  maxLines: 7,
-                  style: Theme.of(context).textTheme.body1),
-            ),
-            Text("Location", style: Theme.of(context).textTheme.subtitle),
-            Text(store.address, style: Theme.of(context).textTheme.body1),
-            Divider(),
-            Center(
-              child: Wrap(
-                spacing: 4.0,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: buildTagsList(store, context),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   List<Widget> buildTagsList(Store store, BuildContext context) {
@@ -328,18 +322,18 @@ class _StoreCardState extends State<StoreCard> {
     }
     Widget hourChip;
     if (store.hours != null && store.hours.hours != null) {
-      print(store.hours.hours.toString());
+      //print(store.hours.hours.toString());
       dynamic hours = store.hours.hours;
       bool currentDay = hours[weekdays[DateTime.now().weekday]]["closed"];
       if (!currentDay) {
         hourChip = Center(
-          child: Chip(label: Text("Open"), backgroundColor: Colors.green),
+          child: Chip(label: Text("Open"), backgroundColor: Colors.green[300]),
         );
       } else {
         hourChip = Center(
           child: Chip(
             label: Text("Closed"),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.red[300],
           ),
         );
       }
@@ -372,13 +366,8 @@ class _StoreCardState extends State<StoreCard> {
                         store.campus ?? "",
                         style: Theme.of(context).textTheme.subtitle,
                       ),
-                      Center(child:
-                          hourChip/*,
-                          Wrap(
-                            alignment: WrapAlignment.spaceAround,
-                            children: buildTagsList(store),
-                          ),*/
-                        ,
+                      Center(
+                        child: hourChip,
                       ),
                     ],
                   ),
@@ -409,41 +398,5 @@ class _StoreCardState extends State<StoreCard> {
       }
     }
     return widgets;
-  }
-
-  //Deprecated
-  void _showStoreDialog(Store store) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StoreDialog(store: store);
-        });
-  }
-}
-
-class FilterDialog extends StatelessWidget {
-  final Widget child;
-
-  FilterDialog({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Text("Campuses"),
-            ],
-          ),
-          Divider(),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> buildCampusList() {
-    List<FilterChip> filters = List();
-    return filters;
   }
 }

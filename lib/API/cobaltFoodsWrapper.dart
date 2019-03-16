@@ -88,13 +88,13 @@ class CobaltApi {
 
       final responseBody = (await http.get(url,headers: keymap )).body;
               //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
-      print(responseBody);
+      //print(responseBody);
       var decodedJson = json.decode(responseBody);
       if (decodedJson is List<dynamic>)
       {
         return json.decode(responseBody);
       }
-      print('Query completed, but return value of wrong type:');
+    //  print('Query completed, but return value of wrong type:');
       return List();
       // Finally, the string is parsed into a JSON object.
       
