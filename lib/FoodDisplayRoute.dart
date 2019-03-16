@@ -326,7 +326,24 @@ class _StoreCardState extends State<StoreCard> {
         height: 80.0,
       );
     }
-
+    Widget hourChip;
+    if (store.hours != null && store.hours.hours != null) {
+      print(store.hours.hours.toString());
+      dynamic hours = store.hours.hours;
+      bool currentDay = hours[weekdays[DateTime.now().weekday]]["closed"];
+      if (!currentDay) {
+        hourChip = Center(
+          child: Chip(label: Text("Open"), backgroundColor: Colors.green),
+        );
+      } else {
+        hourChip = Center(
+          child: Chip(
+            label: Text("Closed"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
     Widget storeCard = Container(
         child: InkWell(
       onTap: () => Navigator.push(
@@ -355,9 +372,13 @@ class _StoreCardState extends State<StoreCard> {
                         store.campus ?? "",
                         style: Theme.of(context).textTheme.subtitle,
                       ),
-                      Wrap(
-                        alignment: WrapAlignment.spaceAround,
-                        children: buildTagsList(store),
+                      Center(child:
+                          hourChip/*,
+                          Wrap(
+                            alignment: WrapAlignment.spaceAround,
+                            children: buildTagsList(store),
+                          ),*/
+                        ,
                       ),
                     ],
                   ),
@@ -389,6 +410,7 @@ class _StoreCardState extends State<StoreCard> {
     }
     return widgets;
   }
+
   //Deprecated
   void _showStoreDialog(Store store) {
     showDialog(
@@ -422,15 +444,6 @@ class FilterDialog extends StatelessWidget {
 
   List<Widget> buildCampusList() {
     List<FilterChip> filters = List();
-    /*for (int i = 0; i < campuses.length; i++) {
-      filters.add(
-        FilterChip(
-          selected: campusFilters[i],
-          label: Text(campuses[i]),
-          onSelected: (tap) => changeCampusFilters(tap, i),
-        ),
-      );
-    }*/
     return filters;
   }
 }

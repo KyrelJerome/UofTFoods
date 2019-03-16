@@ -23,13 +23,20 @@ class StoreViewRoute extends StatelessWidget {
     if (storeImage != null) {
       imageHolder = Container(
         width: double.infinity,
-        height: 180.0,
+        height: 200.0,
         child: storeImage,
       );
     } else {
-      imageHolder = null;
+      imageHolder = Center(
+        child: Container(
+          margin: EdgeInsets.all(20),
+          child: Text("No Images Available"),
+        ),
+      );
     }
-    Widget hourObject = Text("hours");
+    Widget hourObject = Center(
+      child: Text("Hours Not Provided"),
+    );
     if (store.hours != null && store.hours.hours != null) {
       print(store.hours.hours.toString());
       List<Widget> hourList = [];
@@ -44,22 +51,36 @@ class StoreViewRoute extends StatelessWidget {
       } else {
         hourList.add(
           Center(
-            child: Chip(label:Text("Closed"), backgroundColor: Colors.red,),
+            child: Chip(
+              label: Text("Closed"),
+              backgroundColor: Colors.red,
+            ),
           ),
         );
       }
       weekdays.forEach(
         (f) {
-          hourList.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(f.substring(0, 1).toUpperCase() + f.substring(1),
-                  style: Theme.of(context).textTheme.subtitle),
-              Text((hours[f]["open"] / 3600).floor().toString() +
-                  " - " +
-                  (hours[f]["close"] / 3600).floor().toString()),
-            ],
-          ));
+          if (hours[f]["open"] == 0 && hours[f]["close"] == 0) {
+            hourList.add(Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(f.substring(0, 1).toUpperCase() + f.substring(1),
+                    style: Theme.of(context).textTheme.subtitle),
+                Text("CLOSED"),
+              ],
+            ));
+          } else {
+            hourList.add(Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(f.substring(0, 1).toUpperCase() + f.substring(1),
+                    style: Theme.of(context).textTheme.subtitle),
+                Text((hours[f]["open"] / 3600).floor().toString() +
+                    " - " +
+                    (hours[f]["close"] / 3600).floor().toString()),
+              ],
+            ));
+          }
         },
       );
       hourObject = Column(
@@ -67,74 +88,75 @@ class StoreViewRoute extends StatelessWidget {
       );
     }
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                child: Container(
-                  child: Hero(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
+                  Hero(
                     tag: store.hashCode,
                     child: imageHolder,
                   ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                margin: EdgeInsets.all(8.0),
-                child: ListView(
-                  //  mainAxisSize: MainAxisSize.min,
-                  //  crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: new Text(
-                          store.name.toString().trim(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.title,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 4),
-                        child: Text(store.description.trim(),
-                            textAlign: TextAlign.center,
-                            maxLines: 7,
-                            style: Theme.of(context).textTheme.body1),
-                      ),
-                      Divider(),
-                      Text("Location",
-                          style: Theme.of(context).textTheme.subtitle),
-                      Text(store.address,
-                          style: Theme.of(context).textTheme.body1),
-                      Divider(),
-                      hourObject,
-                      Divider(),
-                      Center(
-                        child: Wrap(
-                          spacing: 4.0,
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: buildTagsList(store, context),
-                        ),
-                      ),
-                    ]),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            Center(
+              child: new Text(
+                store.name.toString().trim(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                child: ListView(
+                  padding: EdgeInsets.all(0),
+                  children: [
+                    Text(store.description.trim(),
+                        textAlign: TextAlign.center,
+                        maxLines: 7,
+                        style: Theme.of(context).textTheme.body1),
+                    Divider(),
+                    Text("Location",
+                        style: Theme.of(context).textTheme.subtitle),
+                    Text(store.address,
+                        style: Theme.of(context).textTheme.body1),
+                    Divider(),
+                    hourObject,
+                    Divider(),
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: Wrap(
+                spacing: 4.0,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: buildTagsList(store, context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
