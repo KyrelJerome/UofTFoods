@@ -187,7 +187,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void updateFilteredStores() {
-    print("Updating Filtering stores");
+    //print("Updating Filtering stores");
     List<Store> tempStores = List();
     stores.forEach((Store store) {
       if (!isStoreFiltered(store)) {
@@ -203,7 +203,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     for (int i = 0; i < campuses.length; i++) {
       if (store.campus == campuses[i]) {
         if (!campusFilters[i]) {
-          print("Do not add Store: " + store.name + "| At: " + store.campus);
+         // print("Do not add Store: " + store.name + "| At: " + store.campus);
           return true;
         }
       }
@@ -213,15 +213,15 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       text = text.toLowerCase();
       if (store.name.toLowerCase().contains(text) ||
           store.description.toLowerCase().contains(text)) {
-        print(text + " : add Store: " + store.name);
+        //print(text + " : add Store: " + store.name);
         return false;
       } else {
-        print(text + ": filter store: " + store.name);
+        //print(text + ": filter store: " + store.name);
 
         return true;
       }
     }
-    print("(null or empty search)add store: " + store.name);
+    //print("(null or empty search)add store: " + store.name);
     return false;
   }
 
