@@ -203,7 +203,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     for (int i = 0; i < campuses.length; i++) {
       if (store.campus == campuses[i]) {
         if (!campusFilters[i]) {
-         // print("Do not add Store: " + store.name + "| At: " + store.campus);
+          // print("Do not add Store: " + store.name + "| At: " + store.campus);
           return true;
         }
       }
@@ -305,12 +305,15 @@ class _StoreCardState extends State<StoreCard> {
       imageAlert = 'Image provided and found';
     }
     if (storeImage != null) {
-      imageHolder = Hero(
-        tag: store.hashCode,
-        child: Container(
-          child: storeImage,
-          width: 80,
-          height: 80,
+      imageHolder = ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Hero(
+          tag: store.hashCode,
+          child: Container(
+            child: storeImage,
+            width: 80,
+            height: 80,
+          ),
         ),
       );
     } else {
