@@ -19,8 +19,9 @@ A Flutter Mobile App designed to aid UofT Students and Staff easily find food op
 
 ## App Development Progression
 ### V1.0
-Screenshots coming!
-
+<img src="DevLog/Screenshot_1552706341.png" width = 150>
+<img src="DevLog/Screenshot_1552761542.png" width = 150>
+<img src="DevLog/Screenshot_1552761023.png" width = 150>
 ### V0.9 
 <img src="DevLog/2019-02-22two.png" width="200">
 <img src="DevLog/2019-02-22one.png" width="200">
