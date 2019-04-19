@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="TFoods.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="361.46879"
+     inkscape:cy="784.55156"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#062958;stroke-width:1.56200004;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path822"
+       cx="78.405571"
+       cy="87.303848"
+       rx="26.526499"
+       ry="27.395124" />
+    <path
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.79999924px;line-height:1.25;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';letter-spacing:0px;word-spacing:0px;fill:#062958;fill-opacity:1;stroke:none;stroke-width:0.99999994"
+       d="M 244.49219 266.4043 L 242.99219 296.2168 L 246.55469 296.2168 C 246.99219 290.4668 248.36719 285.9043 250.67969 282.5293 C 252.99219 279.1543 255.77344 276.87305 259.02344 275.68555 C 261.52344 274.81055 265.74219 274.37305 271.67969 274.37305 L 286.96094 274.37305 L 286.96094 371.49805 C 286.96094 378.62304 286.27344 383.18555 284.89844 385.18555 C 282.64844 388.43556 278.83594 390.06055 273.46094 390.06055 L 268.96094 390.06055 L 268.96094 393.5293 L 322.86719 393.5293 L 322.86719 390.06055 L 318.46094 390.06055 C 313.52344 390.06055 309.86719 388.74805 307.49219 386.12305 C 305.80469 384.18554 304.96094 379.31054 304.96094 371.49805 L 304.96094 365.04688 A 7.7143955 7.7143955 0 0 1 299.76172 356.68945 A 7.7143955 7.7143955 0 0 1 300.25391 354.87109 A 7.7143955 7.7143955 0 0 1 294.31055 346.30273 A 7.7143955 7.7143955 0 0 1 295.89258 342.58984 A 7.7143955 7.7143955 0 0 1 291.90234 334.75977 A 7.7143955 7.7143955 0 0 1 296.07422 328.92578 A 7.7143955 7.7143955 0 0 1 294.76367 323.48438 A 7.7143955 7.7143955 0 0 1 300.25586 317.13086 A 7.7143955 7.7143955 0 0 1 299.65234 312.93945 A 7.7143955 7.7143955 0 0 1 304.96094 306.64258 L 304.96094 274.37305 L 322.86719 274.37305 C 328.11719 274.37305 332.33594 275.24805 335.52344 276.99805 C 338.77344 278.68555 341.36719 281.3418 343.30469 284.9668 C 344.49219 287.21679 345.42969 290.9668 346.11719 296.2168 L 349.67969 296.2168 L 348.27344 266.4043 L 244.49219 266.4043 z "
+       transform="scale(0.26458333)"
+       id="path819" />
+  </g>
+</svg>
