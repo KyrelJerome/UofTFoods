@@ -28,4 +28,4 @@ A Flutter Mobile App designed to aid UofT Students and Staff easily find food op
 <img src="DevLog/2019-02-08.png" width="150">
 
 ## Disclaimer because I am just a student and do not want to be sued by a scary big budget UofT boogieman.
-We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with University of Toronto, or any of its subsidiaries or its affiliates. The official Stanford website can be found at https://www.utoronto.ca/ . The name “University of Toronto” as well as related names, marks, emblems and images are registered trademarks of University of Toronto. 
+We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with University of Toronto, or any of its subsidiaries or its affiliates. The official University of Toronto website can be found at https://www.utoronto.ca/ . The name “University of Toronto” as well as related names, marks, emblems and images are registered trademarks of University of Toronto. 
