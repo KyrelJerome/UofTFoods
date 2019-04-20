@@ -29,6 +29,7 @@
 build/
 #android key related
 key.jks
+key.properties
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
