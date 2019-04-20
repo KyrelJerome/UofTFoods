@@ -27,7 +27,8 @@
 .pub-cache/
 .pub/
 build/
-
+#android key related
+key.jks
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
