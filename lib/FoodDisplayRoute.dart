@@ -3,7 +3,7 @@ import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
 import 'StoreViewRoute.dart';
-
+import  'presentation/t_foods_icons.dart';
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -84,14 +84,14 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     return Scaffold(
       appBar: AppBar(
         title: _appBarTitle,
-        leading: IconButton(
+        leading: Icon(TFoods.tfoodstologotest, color: Color.fromARGB(255, 6, 41, 88),),
+        actions: <Widget>[IconButton(
           icon: _searchIcon,
           iconSize: 28,
           tooltip: "Search",
           padding: EdgeInsets.all(4),
           onPressed: _searchPressed,
         ),
-        actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
             iconSize: 28,
@@ -307,15 +307,16 @@ class _StoreCardState extends State<StoreCard> {
     if (storeImage != null) {
       imageHolder = ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Hero(
-          tag: store.hashCode,
-          child: Container(
+        child:  Container(
             child: storeImage,
             width: 80,
             height: 80,
           ),
-        ),
       );
+      //TODO: Implement hero and see why it broke everything.
+      /*Hero(
+          tag: store.hashCode,
+          child:*/
     } else {
       imageHolder = Container(
         child: Center(child: Text(imageAlert)),
