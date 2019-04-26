@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'Hours.dart';
 //import 'dart:convert' show json;
 
+const TIME_TO_HOUR = 3600;
+const weekdays = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
+];
 class Store {
   String id;
   String buildingID;
@@ -53,5 +63,9 @@ class Store {
   bool isOpen(){
     DateTime time = DateTime.now();
      return hours.hours[time.weekday.toString().toLowerCase()]["closed"] == 0;
+  }
+  bool canOpen(){
+    dynamic hours = this.hours.hours;
+    return hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR <= DateTime.now().hour && hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR >= DateTime.now().hour;
   }
 }

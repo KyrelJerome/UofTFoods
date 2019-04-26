@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
-
+const TIME_TO_HOUR = 3600;
 const weekdays = [
   "monday",
   "tuesday",
@@ -41,7 +41,7 @@ class StoreViewRoute extends StatelessWidget {
       print(store.hours.hours.toString());
       List<Widget> hourList = [];
       dynamic hours = store.hours.hours;
-      bool currentDay = hours[weekdays[DateTime.now().weekday]]["closed"];
+      bool currentDay = ;
       if (!currentDay) {
         hourList.add(
           Center(
@@ -75,9 +75,9 @@ class StoreViewRoute extends StatelessWidget {
               children: <Widget>[
                 Text(f.substring(0, 1).toUpperCase() + f.substring(1),
                     style: Theme.of(context).textTheme.subtitle),
-                Text((hours[f]["open"] / 3600).floor().toString() +
+                Text((hours[f]["open"] / TIME_TO_HOUR).floor().toString() +
                     " - " +
-                    (hours[f]["close"] / 3600).floor().toString()),
+                    (hours[f]["close"] / TIME_TO_HOUR).floor().toString()),
               ],
             ));
           }
