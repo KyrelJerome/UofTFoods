@@ -327,8 +327,8 @@ class _StoreCardState extends State<StoreCard> {
     Widget hourChip;
     if (store.hours != null && store.hours.hours != null) {
       //print(store.hours.hours.toString());
-      dynamic hours = store.hours.hours;
-      bool currentDay = hours[weekdays[DateTime.now().weekday]]["closed"];
+      //dynamic hours = store.hours.hours;
+      bool currentDay = store.isOpen();
       if (!currentDay) {
         hourChip = Center(
           child: Chip(label: Text("Open"), backgroundColor: Colors.green[300]),

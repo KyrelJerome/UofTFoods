@@ -64,7 +64,7 @@ class Store {
     DateTime time = DateTime.now();
      return hours.hours[time.weekday.toString().toLowerCase()]["closed"] == 0;
   }
-  bool canOpen(){
+  bool isOpenNow(){
     dynamic hours = this.hours.hours;
     return hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR <= DateTime.now().hour && hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR >= DateTime.now().hour;
   }
