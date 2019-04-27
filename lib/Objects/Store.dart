@@ -62,10 +62,15 @@ class Store {
   }
   bool isOpen(){
     DateTime time = DateTime.now();
-     return hours.hours[time.weekday.toString().toLowerCase()]["closed"] == 0;
+   // print("day" + time.weekday.toString().toLowerCase());
+    //print(hours.hours);
+     return hours.hours[weekdays[time.weekday]]["closed"] == 0;
   }
   bool isOpenNow(){
-    dynamic hours = this.hours.hours;
-    return hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR <= DateTime.now().hour && hours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR >= DateTime.now().hour;
+    dynamic storeHours = this.hours.hours;
+    num open = storeHours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR;
+    num close = storeHours[weekdays[DateTime.now().weekday]]["open"]/TIME_TO_HOUR;
+    bool output = open <= DateTime.now().hour && close >= DateTime.now().hour;
+    return output;
   }
 }

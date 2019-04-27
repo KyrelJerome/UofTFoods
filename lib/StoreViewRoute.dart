@@ -41,8 +41,8 @@ class StoreViewRoute extends StatelessWidget {
       print(store.hours.hours.toString());
       List<Widget> hourList = [];
       dynamic hours = store.hours.hours;
-      bool currentDay = store.isOpenNow();
-      if (!currentDay) {
+      bool open = store.isOpenNow();
+      if (open) {
         hourList.add(
           Center(
             child: Chip(label: Text("Open"), backgroundColor: Colors.green),

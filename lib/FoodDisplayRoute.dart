@@ -3,7 +3,8 @@ import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
 import 'StoreViewRoute.dart';
-import  'presentation/t_foods_icons.dart';
+import 'presentation/t_foods_icons.dart';
+
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
   final double margin = 8;
@@ -84,14 +85,18 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     return Scaffold(
       appBar: AppBar(
         title: _appBarTitle,
-        leading: Icon(TFoods.tfoodstologotest, color: Color.fromARGB(255, 6, 41, 88),),
-        actions: <Widget>[IconButton(
-          icon: _searchIcon,
-          iconSize: 28,
-          tooltip: "Search",
-          padding: EdgeInsets.all(4),
-          onPressed: _searchPressed,
+        leading: Icon(
+          TFoods.tfoodstologotest,
+          color: Color.fromARGB(255, 6, 41, 88),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: _searchIcon,
+            iconSize: 28,
+            tooltip: "Search",
+            padding: EdgeInsets.all(4),
+            onPressed: _searchPressed,
+          ),
           IconButton(
             icon: Icon(Icons.refresh),
             iconSize: 28,
@@ -307,11 +312,11 @@ class _StoreCardState extends State<StoreCard> {
     if (storeImage != null) {
       imageHolder = ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child:  Container(
-            child: storeImage,
-            width: 80,
-            height: 80,
-          ),
+        child: Container(
+          child: storeImage,
+          width: 80,
+          height: 80,
+        ),
       );
       //TODO: Implement hero and see why it broke everything.
       /*Hero(
@@ -328,8 +333,8 @@ class _StoreCardState extends State<StoreCard> {
     if (store.hours != null && store.hours.hours != null) {
       //print(store.hours.hours.toString());
       //dynamic hours = store.hours.hours;
-      bool currentDay = store.isOpen();
-      if (!currentDay) {
+      bool currentDay = store.isOpenNow();
+      if (currentDay) {
         hourChip = Center(
           child: Chip(label: Text("Open"), backgroundColor: Colors.green[300]),
         );
@@ -402,5 +407,31 @@ class _StoreCardState extends State<StoreCard> {
       }
     }
     return widgets;
+  }
+}
+
+class IsOpenChip extends StatelessWidget {
+  final Store store;
+
+  const IsOpenChip({Key key, this.store}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    if (store.hours != null && store.hours.hours != null) {
+      print(store.hours.hours.toString());
+      if (store.isOpenNow()) {
+        return Center(
+          child: Chip(
+            label: Text("Open"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      return Center(
+        child: Chip(
+          label: Text("Closed"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
