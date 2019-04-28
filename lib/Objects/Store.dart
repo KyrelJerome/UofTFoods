@@ -68,8 +68,8 @@ class Store {
   }
   bool isOpenNow(){
     dynamic storeHours = this.hours.hours;
-    num open = storeHours[weekdays[DateTime.now().weekday]]["open"] / TIME_TO_HOUR;
-    num close = storeHours[weekdays[DateTime.now().weekday]]["open"] / TIME_TO_HOUR;
+    num open = storeHours[weekdays[DateTime.now().weekday - 1]]["open"] / TIME_TO_HOUR;
+    num close = storeHours[weekdays[DateTime.now().weekday - 1]]["open"] / TIME_TO_HOUR;
     bool output = open <= DateTime.now().hour && close >= DateTime.now().hour;
     return output;
   }
