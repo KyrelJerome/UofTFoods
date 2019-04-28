@@ -60,16 +60,16 @@ class Store {
       hours: Hours(hours: parsedJson['hours']),
     );
   }
+  static String getDay(){
+    return weekdays[DateTime.now().weekday - 1];
+  }
   bool isOpen(){
-    DateTime time = DateTime.now();
-   // print("day" + time.weekday.toString().toLowerCase());
-    //print(hours.hours);
-     return hours.hours[weekdays[time.weekday]]["closed"] == 0;
+     return hours.hours[getDay()]["closed"] == 0;
   }
   bool isOpenNow(){
     dynamic storeHours = this.hours.hours;
-    num open = storeHours[weekdays[DateTime.now().weekday - 1]]["open"] / TIME_TO_HOUR;
-    num close = storeHours[weekdays[DateTime.now().weekday - 1]]["open"] / TIME_TO_HOUR;
+    num open = storeHours[getDay()]["open"] / TIME_TO_HOUR;
+    num close = storeHours[getDay()]["open"] / TIME_TO_HOUR;
     bool output = open <= DateTime.now().hour && close >= DateTime.now().hour;
     return output;
   }

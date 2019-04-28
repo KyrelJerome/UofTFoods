@@ -3,15 +3,7 @@ import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
 const TIME_TO_HOUR = 3600;
-const weekdays = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday"
-];
+
 
 class StoreViewRoute extends StatelessWidget {
   final Store store;
