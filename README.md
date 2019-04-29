@@ -1,4 +1,4 @@
-# UofT Foods - [Available on Google Play Store Now!](https://www.google.com)
+# UofT Foods - [Available on Google Play Store Now!](https://play.google.com/store/apps/details?id=com.UofTFoods)
 
 
 ## Description
