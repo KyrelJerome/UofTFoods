@@ -1,10 +1,7 @@
-import 'package:deer_food/StoreUI/IsOpenChip.dart';
 import 'package:deer_food/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
-//import 'Objects/Hours.dart';
 import 'API/cobaltFoodsWrapper.dart';
-import 'StoreViewRoute.dart';
 import 'presentation/t_foods_icons.dart';
 
 class FoodDisplayRoute extends StatefulWidget {
@@ -59,7 +56,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
     });
     _searchIcon = Icon(Icons.search);
-    _appBarTitle = Center(child: Text(widget.title));
+    _appBarTitle = Center(
+      child: Text(
+        widget.title,
+        //style: TextStyle(fontFamily: )
+      ),
+    );
     print("Ran init state");
   }
 
@@ -88,21 +90,20 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         title: _appBarTitle,
         leading: Icon(
           TFoods.tfoodstologotest,
-          color: Color.fromARGB(255, 6, 41, 88),
+          size: 24.0,
+          color: Colors.white,
         ),
         actions: <Widget>[
           IconButton(
             icon: _searchIcon,
-            iconSize: 28,
+            //iconSize: 28,
             tooltip: "Search",
-            padding: EdgeInsets.all(4),
             onPressed: _searchPressed,
           ),
           IconButton(
             icon: Icon(Icons.refresh),
-            iconSize: 28,
+            //iconSize: 28,
             tooltip: "Page refreshed!",
-            padding: EdgeInsets.all(4),
             onPressed: loadUnfilteredStores,
           ),
         ],
@@ -171,7 +172,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void loadUnfilteredStores() async {
     print("loading unfiltered stores");
     List<Store> loadStream = await api.getFoodsJson();
-    //Capitalize every first letter of every tag on load, longer load time by 2n where n is the number of tags.
     if (loadStream != null) {
       for (int i = 0; i < loadStream.length; i++) {
         List<dynamic> tags = loadStream[i].tags;
