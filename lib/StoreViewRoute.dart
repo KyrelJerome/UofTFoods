@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
-import 'API/cobaltFoodsWrapper.dart';
+//import 'API/cobaltFoodsWrapper.dart';
 const TIME_TO_HOUR = 3600;
 
 
@@ -155,12 +155,11 @@ class StoreViewRoute extends StatelessWidget {
       ),
     );
   }
-
   List<Widget> buildTagsList(Store store, BuildContext context) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
       int tagLength = 0;
-      for (int i = 0; i < store.tags.length && i < 5 && tagLength < 50; i++) {
+      for (int i = 0; i < store.tags.length && i < 7 && tagLength < 50; i++) {
         tagLength += store.tags[i].toString().length;
         widgets.add(
           Chip(

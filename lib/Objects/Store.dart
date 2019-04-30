@@ -67,10 +67,13 @@ class Store {
      return hours.hours[getDay()]["closed"] == 0;
   }
   bool isOpenNow(){
+    double currTime = DateTime.now().hour + DateTime.now().minute/60.0;//Current time in hours, double
     dynamic storeHours = this.hours.hours;
     num open = storeHours[getDay()]["open"] / TIME_TO_HOUR;
-    num close = storeHours[getDay()]["open"] / TIME_TO_HOUR;
-    bool output = open <= DateTime.now().hour && close >= DateTime.now().hour;
+    num close = storeHours[getDay()]["close"] / TIME_TO_HOUR;
+    //print("Store:" + name + "\n Hours: " + open.toString() + " - " + close.toString());
+    //print("Current: " + currTime.toString());
+    bool output = open <= currTime && close >= currTime;
     return output;
-  }
+  } 
 }

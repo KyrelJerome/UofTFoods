@@ -1,3 +1,4 @@
+import 'package:deer_food/StoreUI/IsOpenChip.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
@@ -310,18 +311,17 @@ class _StoreCardState extends State<StoreCard> {
       imageAlert = 'Image provided and found';
     }
     if (storeImage != null) {
-      imageHolder = ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          child: storeImage,
-          width: 80,
-          height: 80,
+      imageHolder = Hero(
+        tag: store.hashCode,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            child: storeImage,
+            width: 80,
+            height: 80,
+          ),
         ),
       );
-      //TODO: Implement hero and see why it broke everything.
-      /*Hero(
-          tag: store.hashCode,
-          child:*/
     } else {
       imageHolder = Container(
         child: Center(child: Text(imageAlert)),
@@ -329,8 +329,10 @@ class _StoreCardState extends State<StoreCard> {
         height: 80.0,
       );
     }
-    Widget hourChip;
-    if (store.hours != null && store.hours.hours != null) {
+    Widget hourChip = IsOpenChip(
+      store: store,
+    );
+    /*if (store.hours != null && store.hours.hours != null) {
       //print(store.hours.hours.toString());
       //dynamic hours = store.hours.hours;
       bool currentDay = store.isOpenNow();
@@ -346,7 +348,7 @@ class _StoreCardState extends State<StoreCard> {
           ),
         );
       }
-    }
+    }*/
     Widget storeCard = Container(
         child: InkWell(
       onTap: () => Navigator.push(
@@ -407,31 +409,5 @@ class _StoreCardState extends State<StoreCard> {
       }
     }
     return widgets;
-  }
-}
-
-class IsOpenChip extends StatelessWidget {
-  final Store store;
-
-  const IsOpenChip({Key key, this.store}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    if (store.hours != null && store.hours.hours != null) {
-      print(store.hours.hours.toString());
-      if (store.isOpenNow()) {
-        return Center(
-          child: Chip(
-            label: Text("Open"),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-      return Center(
-        child: Chip(
-          label: Text("Closed"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
   }
 }
