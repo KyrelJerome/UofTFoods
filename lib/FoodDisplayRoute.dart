@@ -14,6 +14,7 @@ class FoodDisplayRoute extends StatefulWidget {
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
+  List<List<Store>> campusStores = List();
   List<Store> stores;
   List<Store> filteredStores;
   final TextEditingController _filter = new TextEditingController();
@@ -32,15 +33,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   DateTime date;
 
   void initState() {
-    //print("Running init state");
     super.initState();
-    //tags = 0;
     api = CobaltApi();
     filters = List();
     filteredStores = List();
     stores = List();
     date = DateTime.now();
-
     loadUnfilteredStores();
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -59,10 +57,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     _appBarTitle = Center(
       child: Text(
         widget.title,
-        //style: TextStyle(fontFamily: )
       ),
     );
-    print("Ran init state");
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:deer_food/Objects/Hours.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 //import 'Objects/Hours.dart';
@@ -50,7 +51,7 @@ class StoreViewRoute extends StatelessWidget {
           ),
         );
       }
-      weekdays.forEach(
+      Hours.weekdays.forEach(
         (f) {
           if (hours[f]["open"] == 0 && hours[f]["close"] == 0) {
             hourList.add(Row(
@@ -142,12 +143,14 @@ class StoreViewRoute extends StatelessWidget {
                 ),
               ),
             ),
-            Center(
-              child: Wrap(
-                spacing: 4.0,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: buildTagsList(store, context),
+            Container(
+              child: Center(
+                child: Wrap(
+                  spacing: 4.0,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: buildTagsList(store, context),
+                ),
               ),
             ),
           ],
@@ -163,6 +166,7 @@ class StoreViewRoute extends StatelessWidget {
         tagLength += store.tags[i].toString().length;
         widgets.add(
           Chip(
+            backgroundColor: Theme.of(context).primaryColor,
             label: Text((store.tags[i].toString()),
                 style: Theme.of(context).textTheme.caption),
           ),

@@ -2,16 +2,6 @@ import 'package:flutter/material.dart';
 import 'Hours.dart';
 //import 'dart:convert' show json;
 
-const TIME_TO_HOUR = 3600;
-const weekdays = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday"
-];
 class Store {
   String id;
   String buildingID;
@@ -43,6 +33,7 @@ class Store {
     @required this.hours,
     @required this.tags,
   });
+  /*Builds a Store object using the data from cobalt API*/
   factory Store.fromJson(Map<String, dynamic> parsedJson) {
     return Store(
       description: parsedJson['description'],
@@ -60,19 +51,20 @@ class Store {
       hours: Hours(hours: parsedJson['hours']),
     );
   }
-  static String getDay(){
-    return weekdays[DateTime.now().weekday - 1];
+  bool isOpenPerm(){
+     return hours.hours[Hours.getDay()]["closed"] == 0;
   }
-  bool isOpen(){
-     return hours.hours[getDay()]["closed"] == 0;
+  double opensIn() {
+    return Hours.currTimeMinutes() - hours.getOpenMinute(Hours.getDay());
+  }
+  double closesIn() {
+    return Hours.currTimeMinutes() - hours.getOpenMinute(Hours.getDay());
   }
   bool isOpenNow(){
-    double currTime = DateTime.now().hour + DateTime.now().minute/60.0;//Current time in hours, double
+    double currTime = Hours.currTimeHours();
     dynamic storeHours = this.hours.hours;
-    num open = storeHours[getDay()]["open"] / TIME_TO_HOUR;
-    num close = storeHours[getDay()]["close"] / TIME_TO_HOUR;
-    //print("Store:" + name + "\n Hours: " + open.toString() + " - " + close.toString());
-    //print("Current: " + currTime.toString());
+    num open = storeHours.getOpenHour(Hours.getDay());
+    num close = storeHours.getCloseHour(Hours.getDay());
     bool output = open <= currTime && close >= currTime;
     return output;
   } 
