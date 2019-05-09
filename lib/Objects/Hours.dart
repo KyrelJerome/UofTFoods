@@ -13,14 +13,14 @@ class Hours {
     "sunday"
   ];
 
-  dynamic hours;
+  dynamic _hours;
 
-  Hours({
-    @required this.hours,
-  });
+  Hours(dynamic hours){
+    _hours = hours;
+  }
 
   factory Hours.fromJson(Map<String, dynamic> parsedJson) {
-    return Hours(hours: parsedJson);
+    return Hours(parsedJson);
   }
 
   static String getDay() {
@@ -35,19 +35,22 @@ class Hours {
     return DateTime.now().minute;
   }
 
+  bool hasHours(){
+    return _hours != null;
+  }
   double getOpenHour(String day) {
-    return hours[day]["open"] / TIME_TO_HOUR;
+    return _hours[day]["open"] / TIME_TO_HOUR;
   }
 
   double getOpenMinute(String day) {
-    return hours[day]["open"] / TIME_TO_MINUTE;
+    return _hours[day]["open"] / TIME_TO_MINUTE;
   }
 
   double getCloseHour(String day) {
-    return hours[day]["close"] / TIME_TO_HOUR;
+    return _hours[day]["close"] / TIME_TO_HOUR;
   }
 
   double getCloseMinute(String day) {
-    return hours[day]["close"] / TIME_TO_MINUTE;
+    return _hours[day]["close"] / TIME_TO_MINUTE;
   }
 }

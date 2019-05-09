@@ -30,10 +30,9 @@ class StoreViewRoute extends StatelessWidget {
     Widget hourObject = Center(
       child: Text("Hours Not Provided"),
     );
-    if (store.hours != null && store.hours.hours != null) {
-      print(store.hours.hours.toString());
+    if (store.hours != null && store.hours.hasHours() != null) {
       List<Widget> hourList = [];
-      dynamic hours = store.hours.hours;
+      Hours hours = store.hours;
       bool open = store.isOpenNow();
       if (open) {
         hourList.add(
@@ -52,12 +51,12 @@ class StoreViewRoute extends StatelessWidget {
         );
       }
       Hours.weekdays.forEach(
-        (f) {
-          if (hours[f]["open"] == 0 && hours[f]["close"] == 0) {
+        (day) {
+          if (hours.getOpenHour(day) == 0 && hours.getCloseHour(day) == 0) {
             hourList.add(Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(f.substring(0, 1).toUpperCase() + f.substring(1),
+                Text(day.substring(0, 1).toUpperCase() + day.substring(1),
                     style: Theme.of(context).textTheme.subtitle),
                 Text("CLOSED"),
               ],
@@ -66,11 +65,11 @@ class StoreViewRoute extends StatelessWidget {
             hourList.add(Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(f.substring(0, 1).toUpperCase() + f.substring(1),
+                Text(day.substring(0, 1).toUpperCase() + day.substring(1),
                     style: Theme.of(context).textTheme.subtitle),
-                Text((hours[f]["open"] / TIME_TO_HOUR).floor().toString() +
+                Text(hours.getOpenHour(day).floor().toString() +
                     " - " +
-                    (hours[f]["close"] / TIME_TO_HOUR).floor().toString()),
+                    hours.getCloseHour(day).floor().toString()),
               ],
             ));
           }
