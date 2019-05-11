@@ -8,7 +8,7 @@ class IsOpenChip extends StatelessWidget {
   const IsOpenChip({Key key, this.store}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    if (store.hours != null && store.hours.hours != null) {
+    if (store.hours != null && store.hours.hasHours() != null) {
       //print(store.hours.hours.toString());
       if (store.isOpenNow()) {
         return Center(

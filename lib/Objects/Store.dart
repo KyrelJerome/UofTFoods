@@ -48,11 +48,11 @@ class Store {
       lng: parsedJson['lng'],
       address: parsedJson['address'],
       website: parsedJson['website'],
-      hours: Hours(hours: parsedJson['hours']),
+      hours: Hours( parsedJson['hours']),
     );
   }
   bool isOpenPerm(){
-     return hours.hours[Hours.getDay()]["closed"] == 0;
+     return hours.getClosed(Hours.getDay());
   }
   double opensIn() {
     return Hours.currTimeMinutes() - hours.getOpenMinute(Hours.getDay());
@@ -62,7 +62,7 @@ class Store {
   }
   bool isOpenNow(){
     double currTime = Hours.currTimeHours();
-    dynamic storeHours = this.hours.hours;
+    dynamic storeHours = this.hours;
     num open = storeHours.getOpenHour(Hours.getDay());
     num close = storeHours.getCloseHour(Hours.getDay());
     bool output = open <= currTime && close >= currTime;

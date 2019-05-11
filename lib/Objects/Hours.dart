@@ -38,6 +38,10 @@ class Hours {
   bool hasHours(){
     return _hours != null;
   }
+  
+  bool getClosed(String day){
+    return _hours[day]["closed"] == 0 ;
+  }
   double getOpenHour(String day) {
     return _hours[day]["open"] / TIME_TO_HOUR;
   }
