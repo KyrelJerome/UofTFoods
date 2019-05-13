@@ -1,10 +1,11 @@
 import 'package:deer_food/Objects/Hours.dart';
+import 'package:deer_food/StoreUI/IsOpenChip.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
+
 //import 'Objects/Hours.dart';
 //import 'API/cobaltFoodsWrapper.dart';
 const TIME_TO_HOUR = 3600;
-
 
 class StoreViewRoute extends StatelessWidget {
   final Store store;
@@ -33,23 +34,7 @@ class StoreViewRoute extends StatelessWidget {
     if (store.hours != null && store.hours.hasHours() != null) {
       List<Widget> hourList = [];
       Hours hours = store.hours;
-      bool open = store.isOpenNow();
-      if (open) {
-        hourList.add(
-          Center(
-            child: Chip(label: Text("Open"), backgroundColor: Colors.green),
-          ),
-        );
-      } else {
-        hourList.add(
-          Center(
-            child: Chip(
-              label: Text("Closed"),
-              backgroundColor: Colors.red,
-            ),
-          ),
-        );
-      }
+      hourList.add(IsOpenChip(store: store));
       Hours.weekdays.forEach(
         (day) {
           if (hours.getOpenHour(day) == 0 && hours.getCloseHour(day) == 0) {
@@ -127,14 +112,18 @@ class StoreViewRoute extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 7,
                         style: Theme.of(context).textTheme.body1),
-                   // Divider(),
-                   // Text(store.website,
-                   //     style: Theme.of(context).textTheme.body1),
+                    // Divider(),
+                    // Text(store.website,
+                    //     style: Theme.of(context).textTheme.body1),
                     Divider(),
-                    Text("Location",
-                        style: Theme.of(context).textTheme.subtitle),
-                    Text(store.address,
-                        style: Theme.of(context).textTheme.body1),
+                    Center(
+                      child: Text("Location",
+                          style: Theme.of(context).textTheme.subtitle),
+                    ),
+                    Center(
+                      child: Text(store.address,
+                          style: Theme.of(context).textTheme.body1),
+                    ),
                     Divider(),
                     hourObject,
                     Divider(),
@@ -143,8 +132,10 @@ class StoreViewRoute extends StatelessWidget {
               ),
             ),
             Container(
+             // height: 35,
               child: Center(
                 child: Wrap(
+                  //scrollDirection: Axis.horizontal,
                   spacing: 4.0,
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -157,17 +148,20 @@ class StoreViewRoute extends StatelessWidget {
       ),
     );
   }
+
   List<Widget> buildTagsList(Store store, BuildContext context) {
     List<Widget> widgets = List();
     if (store != null && store.tags != null) {
       int tagLength = 0;
-      for (int i = 0; i < store.tags.length && i < 7 && tagLength < 50; i++) {
+      for (int i = 0; i < store.tags.length && i < 10 && tagLength < 75; i++) {
         tagLength += store.tags[i].toString().length;
         widgets.add(
           Chip(
             backgroundColor: Theme.of(context).primaryColor,
-            label: Text((store.tags[i].toString()),
-                style: Theme.of(context).textTheme.caption),
+            label: Text(
+              (store.tags[i].toString()),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         );
       }

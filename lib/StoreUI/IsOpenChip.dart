@@ -1,4 +1,3 @@
-
 import 'package:deer_food/Objects/Store.dart';
 import 'package:flutter/material.dart';
 
@@ -11,17 +10,33 @@ class IsOpenChip extends StatelessWidget {
     if (store.hours != null && store.hours.hasHours() != null) {
       //print(store.hours.hours.toString());
       if (store.isOpenNow()) {
-        return Center(
-          child: Chip(
-            label: Text("Open"),
-            backgroundColor: Colors.green,
-          ),
-        );
+        double closesIn = store.closesIn();
+        if (closesIn < 60) {
+          return Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Center(
+                child: Chip(
+                  label: Text("Open", style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.green,
+                ),
+              )
+            ],
+          );
+        } else {
+          return Center(
+            child: Chip(
+              label: Text("Open", style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
       }
     }
     return Center(
       child: Chip(
-        label: Text("Closed"),
+        label: Text("Closed", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
       ),
     );

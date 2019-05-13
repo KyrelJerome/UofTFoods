@@ -58,7 +58,7 @@ class Store {
     return Hours.currTimeMinutes() - hours.getOpenMinute(Hours.getDay());
   }
   double closesIn() {
-    return Hours.currTimeMinutes() - hours.getOpenMinute(Hours.getDay());
+    return Hours.currTimeMinutes() - hours.getCloseMinute(Hours.getDay());
   }
   bool isOpenNow(){
     double currTime = Hours.currTimeHours();

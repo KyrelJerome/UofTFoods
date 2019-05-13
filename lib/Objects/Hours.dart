@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Hours {
   static const TIME_TO_HOUR = 3600;
   static const TIME_TO_MINUTE = 60;
@@ -40,21 +38,31 @@ class Hours {
   }
   
   bool getClosed(String day){
+    if( hasHours())
     return _hours[day]["closed"] == 0 ;
+    return true;
   }
   double getOpenHour(String day) {
+    if(hasHours())
     return _hours[day]["open"] / TIME_TO_HOUR;
+    return -1;
   }
 
   double getOpenMinute(String day) {
+        if(hasHours())
     return _hours[day]["open"] / TIME_TO_MINUTE;
+    return -1;
   }
 
   double getCloseHour(String day) {
+    if(hasHours())
     return _hours[day]["close"] / TIME_TO_HOUR;
+    return -1;
   }
 
   double getCloseMinute(String day) {
+    if(hasHours())
     return _hours[day]["close"] / TIME_TO_MINUTE;
+    return -1;
   }
 }
