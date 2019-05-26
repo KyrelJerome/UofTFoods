@@ -37,7 +37,7 @@ class StoreViewRoute extends StatelessWidget {
       hourList.add(IsOpenChip(store: store));
       Hours.weekdays.forEach(
         (day) {
-          if (hours.getOpenHour(day) == 0 && hours.getCloseHour(day) == 0) {
+          if (hours.getOpenHour(day) <= 0 && hours.getCloseHour(day) <= 0) {
             hourList.add(Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
