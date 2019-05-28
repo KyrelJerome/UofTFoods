@@ -11,7 +11,9 @@ A Flutter Mobile App designed to aid UofT Students and Staff easily find food op
 - Search
 
 ### Coming soon
-- Better Filtering
+- Opens In, Closes In
+- Open Filter
+- Close Filter
 - Sorting
 - "Nearby"
 - "Navigate"
