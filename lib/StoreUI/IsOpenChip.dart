@@ -8,7 +8,6 @@ class IsOpenChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (store.hours != null && store.hours.hasHours() != null) {
-      //print(store.hours.hours.toString());
       if (store.isOpenNow()) {
         double closesIn = store.closesIn();
         if (closesIn < 60) {
