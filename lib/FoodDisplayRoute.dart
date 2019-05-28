@@ -11,6 +11,7 @@ class FoodDisplayRoute extends StatefulWidget {
   @override
   _FoodDisplayRouteState createState() => _FoodDisplayRouteState();
 }
+  enum filterType{OPEN, CLOSED, MICROWAVE}
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
@@ -22,10 +23,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   Icon _searchIcon;
   String _searchText;
   List<bool> campusFilters = [true, true, true];
-  List<String> filters = [
-    "Open",
-    "Microwave",
-  ]; // Open // Building //
+  //Filters, // 0 = disabled 1 = enabled
+  Map<filterType, int> filters = {filterType.OPEN: 0, filterType.CLOSED: 0 , filterType.MICROWAVE : 0};
   int campus = 0;
   CobaltApi api;
   int openFilter;
@@ -63,9 +62,9 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   @override
   Widget build(BuildContext context) {
-    Widget dataWrapper;
+    Widget  storeListWrapper;
     if (filteredStores != null && filteredStores.length > 0) {
-      dataWrapper = Expanded(
+      storeListWrapper = Expanded(
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -75,7 +74,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             }),
       );
     } else {
-      dataWrapper = Expanded(
+       storeListWrapper = Expanded(
         child: Center(
           child: Text("No Results Found"),
         ),
@@ -138,7 +137,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Divider(
               height: 0,
             ),
-            dataWrapper,
+             storeListWrapper,
           ],
         ),
       ),
@@ -209,6 +208,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           return true;
         }
       }
+    }
+    if(filters[filterType.OPEN] == 1 && ! store.isOpenNow()){
+      return true;
+    }
+    if(filters[filterType.CLOSED] == 1 && store.isOpenNow()){
+      return false;
     }
     String text = _searchText;
     if (text != null && text != "") {
