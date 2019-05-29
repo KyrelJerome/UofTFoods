@@ -11,10 +11,22 @@ class FoodDisplayRoute extends StatefulWidget {
   @override
   _FoodDisplayRouteState createState() => _FoodDisplayRouteState();
 }
-  enum filterType{OPEN, CLOSED, MICROWAVE}
+
+enum filterType { OPEN, CLOSED, MICROWAVE, UTM, UTSG, UTSC }
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
+  Map<filterType, int> filterStates;
+  //Filters have States, Clauses, and Actions
+  Map<filterType, List> filterData = {
+    filterType.OPEN: [
+      "Open",
+    ],
+    filterType.CLOSED: ["Closed", ],
+    filterType.UTM: ["UTM"],
+    filterType.UTSG: ["UTSG"],
+    filterType.UTSC: ["UTSC"]
+  };
   List<List<Store>> campusStores = List();
   List<Store> stores;
   List<Store> filteredStores;
@@ -24,7 +36,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   String _searchText;
   List<bool> campusFilters = [true, true, true];
   //Filters, // 0 = disabled 1 = enabled
-  Map<filterType, int> filters = {filterType.OPEN: 0, filterType.CLOSED: 0 , filterType.MICROWAVE : 0};
   int campus = 0;
   CobaltApi api;
   int openFilter;
@@ -34,7 +45,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void initState() {
     super.initState();
     api = CobaltApi();
-    filters = List();
+    filterStates = {
+      filterType.OPEN: 0,
+      filterType.CLOSED: 0,
+      filterType.MICROWAVE: 0
+    };
     filteredStores = List();
     stores = List();
     date = DateTime.now();
@@ -62,7 +77,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   @override
   Widget build(BuildContext context) {
-    Widget  storeListWrapper;
+    Widget storeListWrapper;
     if (filteredStores != null && filteredStores.length > 0) {
       storeListWrapper = Expanded(
         child: ListView.builder(
@@ -74,7 +89,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             }),
       );
     } else {
-       storeListWrapper = Expanded(
+      storeListWrapper = Expanded(
         child: Center(
           child: Text("No Results Found"),
         ),
@@ -127,7 +142,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                     child: Center(
                       child: IconButton(
                         icon: Icon(Icons.filter_list),
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -137,7 +156,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Divider(
               height: 0,
             ),
-             storeListWrapper,
+            storeListWrapper,
           ],
         ),
       ),
@@ -209,10 +228,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         }
       }
     }
-    if(filters[filterType.OPEN] == 1 && ! store.isOpenNow()){
+    if (filterStates[filterType.OPEN] == 1 && !store.isOpenNow()) {
       return true;
     }
-    if(filters[filterType.CLOSED] == 1 && store.isOpenNow()){
+    if (filterStates[filterType.CLOSED] == 1 && store.isOpenNow()) {
       return false;
     }
     String text = _searchText;
@@ -259,6 +278,19 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       print(isFiltered.toString() + "Campus : " + i.toString());
     });
     updateFilteredStores();
+  }
+
+  buildFiltersList2() {
+    List<FilterChip> filters = List();
+    for (int i = 0; i < filterType.values.length; i++) {
+      filters.add(
+        FilterChip(
+          selected: campusFilters[i],
+          label: Text(campuses[i]),
+          onSelected: (tap) => changeCampusFilters(tap, i),
+        ),
+      );
+    }
   }
 
   List<Widget> buildFiltersList() {
