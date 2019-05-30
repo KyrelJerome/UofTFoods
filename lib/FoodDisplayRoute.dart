@@ -272,10 +272,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
     });
   }
-  void changeFilterState(){
-    setState((){});
+
+  void changeFilterState() {
+    setState(() {});
     updateFilteredStores();
   }
+
   void changeCampusFilters(bool isFiltered, int i) {
     setState(() {
       campusFilters[i] = isFiltered;
@@ -284,10 +286,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     updateFilteredStores();
   }
 
-  buildFiltersList2() {
-    for(filter in filters){
-
-    }
+  List<Widget> buildFiltersList2() {
+    List widgets = List();
+    filters.forEach((StoreFilter filter) {
+      widgets.add(filter.filterChip);
+    });
   }
 
   List<Widget> buildFiltersList() {
