@@ -2,6 +2,7 @@ import 'package:deer_food/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'API/cobaltFoodsWrapper.dart';
+import 'Objects/StoreFilter.dart';
 import 'presentation/t_foods_icons.dart';
 
 class FoodDisplayRoute extends StatefulWidget {
@@ -22,11 +23,14 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     filterType.OPEN: [
       "Open",
     ],
-    filterType.CLOSED: ["Closed", ],
+    filterType.CLOSED: [
+      "Closed",
+    ],
     filterType.UTM: ["UTM"],
     filterType.UTSG: ["UTSG"],
     filterType.UTSC: ["UTSC"]
   };
+  List<StoreFilter> filters;
   List<List<Store>> campusStores = List();
   List<Store> stores;
   List<Store> filteredStores;
@@ -123,7 +127,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(horizontal: widget.margin),
+              margin: EdgeInsets.symmetric(horizontal: 0),
               padding: EdgeInsets.symmetric(vertical: 0),
               width: double.infinity,
               child: Row(
@@ -131,24 +135,21 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                 children: <Widget>[
                   Container(
                     child: Expanded(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 8.0,
-                        children: buildFiltersList(),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8),
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          spacing: 8.0,
+                          children: buildFiltersList(),
+                        ),
                       ),
                     ),
                   ),
-                  Container(
-                    child: Center(
-                      child: IconButton(
-                        icon: Icon(Icons.filter_list),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                          );
-                        },
-                      ),
-                    ),
+                  IconButton(
+                    icon: Icon(Icons.filter_list),
+                    onPressed: () {
+                      //TODO: Add Filtering Interface
+                    },
                   ),
                 ],
               ),
@@ -271,7 +272,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
     });
   }
-
+  void changeFilterState(){
+    setState((){});
+    updateFilteredStores();
+  }
   void changeCampusFilters(bool isFiltered, int i) {
     setState(() {
       campusFilters[i] = isFiltered;
@@ -281,15 +285,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   buildFiltersList2() {
-    List<FilterChip> filters = List();
-    for (int i = 0; i < filterType.values.length; i++) {
-      filters.add(
-        FilterChip(
-          selected: campusFilters[i],
-          label: Text(campuses[i]),
-          onSelected: (tap) => changeCampusFilters(tap, i),
-        ),
-      );
+    for(filter in filters){
+
     }
   }
 
