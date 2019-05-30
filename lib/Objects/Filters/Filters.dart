@@ -5,7 +5,7 @@ enum campuses { UTM, UTSG, UTSC }
 
 class CampusFilter extends StoreFilter {
   CampusFilter(
-    dynamic action,
+    Function(bool) action,
     String name,
     String shortName,
     bool state,
@@ -18,3 +18,18 @@ class CampusFilter extends StoreFilter {
     };
   }
 }
+
+class OpenFilter extends StoreFilter {
+  OpenFilter(Function(bool) action, bool state)
+      : super(action, "Show Only Open Stores", "Open", state, (Store store) {
+          return store.isOpenNow();
+        });
+}
+
+class ClosedFilter extends StoreFilter {
+  ClosedFilter(Function(bool) action, bool state)
+      : super(action, "Show Only Open Stores", "Open", state, (Store store) {
+          return !store.isOpenNow();
+        });
+}
+
