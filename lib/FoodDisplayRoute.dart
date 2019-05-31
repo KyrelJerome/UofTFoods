@@ -17,24 +17,11 @@ enum filterType { OPEN, CLOSED, MICROWAVE, UTM, UTSG, UTSC }
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
-  Map<filterType, int> filterStates;
-  //Filters have States, Clauses, and Actions
-  Map<filterType, List> filterData = {
-    filterType.OPEN: [
-      "Open",
-    ],
-    filterType.CLOSED: [
-      "Closed",
-    ],
-    filterType.UTM: ["UTM"],
-    filterType.UTSG: ["UTSG"],
-    filterType.UTSC: ["UTSC"]
-  };
   List<StoreFilter> filters;
   List<List<Store>> campusStores = List();
   List<Store> stores;
   List<Store> filteredStores;
-  final TextEditingController _filter = new TextEditingController();
+  final TextEditingController _searchFilter = new TextEditingController();
   Widget _appBarTitle;
   Icon _searchIcon;
   String _searchText;
@@ -42,31 +29,26 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   //Filters, // 0 = disabled 1 = enabled
   int campus = 0;
   CobaltApi api;
-  int openFilter;
   String building;
   DateTime date;
 
   void initState() {
     super.initState();
     api = CobaltApi();
-    filterStates = {
-      filterType.OPEN: 0,
-      filterType.CLOSED: 0,
-      filterType.MICROWAVE: 0
-    };
+    
     filteredStores = List();
     stores = List();
     date = DateTime.now();
     loadUnfilteredStores();
-    _filter.addListener(() {
-      if (_filter.text.isEmpty) {
+    _searchFilter.addListener(() {
+      if (_searchFilter.text.isEmpty) {
         setState(() {
           _searchText = "";
           updateFilteredStores();
         });
       } else {
         setState(() {
-          _searchText = _filter.text;
+          _searchText = _searchFilter.text;
           updateFilteredStores();
         });
       }
@@ -169,7 +151,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       if (this._searchIcon.icon == Icons.search) {
         this._searchIcon = new Icon(Icons.close);
         this._appBarTitle = new TextField(
-          controller: _filter,
+          controller: _searchFilter,
           style: TextStyle(color: Colors.white),
           decoration: new InputDecoration(
             hintText: 'Search...',
@@ -178,8 +160,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       } else {
         this._searchIcon = new Icon(Icons.search);
         this._appBarTitle = new Text(widget.title);
-        // filteredNames = names;
-        _filter.clear();
+        _searchFilter.clear();
       }
     });
   }
@@ -207,6 +188,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     } else {}
   }
 
+
   void updateFilteredStores() {
     //print("Updating Filtering stores");
     List<Store> tempStores = List();
@@ -219,7 +201,27 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       filteredStores = tempStores;
     });
   }
+  bool isStorefiltered(Store store){
+    for(int i = 0; i < filters.length; i ++){
+      if(filters[i].filter(store))return true;
+    }
+    //SearchFilter
+    String text = _searchText;
+    if (text != null && text != "") {
+      text = text.toLowerCase();
+      if (store.name.toLowerCase().contains(text) ||
+          store.description.toLowerCase().contains(text)) {
+        //print(text + " : add Store: " + store.name);
+        return false;
+      } else {
+        //print(text + ": filter store: " + store.name);
 
+        return true;
+      }
+    }
+    //print("(null or empty search)add store: " + store.name);
+    return false;
+  }
   bool isStoreFiltered(Store store) {
     for (int i = 0; i < campuses.length; i++) {
       if (store.campus == campuses[i]) {
@@ -228,12 +230,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           return true;
         }
       }
-    }
-    if (filterStates[filterType.OPEN] == 1 && !store.isOpenNow()) {
-      return true;
-    }
-    if (filterStates[filterType.CLOSED] == 1 && store.isOpenNow()) {
-      return false;
     }
     String text = _searchText;
     if (text != null && text != "") {
@@ -286,11 +282,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     updateFilteredStores();
   }
 
-  List<Widget> buildFiltersList2() {
-    List widgets = List();
+  List<FilterChip> buildFiltersList2() {
+    List<FilterChip> widgets = List();
     filters.forEach((StoreFilter filter) {
       widgets.add(filter.filterChip);
     });
+    return widgets;
   }
 
   List<Widget> buildFiltersList() {

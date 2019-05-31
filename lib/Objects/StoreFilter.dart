@@ -6,27 +6,27 @@ class StoreFilter {
   String _label;
   String _toolTip;
   Function(bool) _action;
-  Function(Store) _filter;// True means filter, off means do not filter.
-  bool _state;// Inable
+  Function(Store) _filter;// True means filter, false means do not filter.
+  bool _isActive;
 
   bool filter(Store store){
-    if(!_state){
+    if(_isActive){//Must be active
       return true;
     }
     return _filter(store);
   }
-  StoreFilter(Function(bool) action, String tooltip, String label, bool state, Function(Store) filter){
+  StoreFilter(Function(bool) action, String tooltip, String label, bool isActive, Function(Store) filter){
     _action = action;
     _filter = filter;
     _toolTip = tooltip;
     _label = label;
-    _state = state;
+    _isActive = isActive;
   }
 
   get filterChip {
     return FilterChip(
       tooltip: _toolTip ,
-      selected: _state,
+      selected: _isActive,
       label: Text(_label),
       onSelected: _action,
     );
