@@ -233,9 +233,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         }
       }
     }
-      
-    /*
-    print("Length: " + tempStores.length.toString());
+    /*print("Length: " + tempStores.length.toString());
     for (int i = 0; i < filters.length; i++) {
       print("Applying Filter: " + filters[i].shortName);
       tempStores = filters[i].applyFilter(tempStores);
