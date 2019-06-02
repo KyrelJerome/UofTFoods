@@ -1,5 +1,6 @@
 import 'package:deer_food/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
+import 'Objects/Filters/Filters.dart';
 import 'Objects/Store.dart';
 import 'API/cobaltFoodsWrapper.dart';
 import 'Objects/StoreFilter.dart';
@@ -18,7 +19,6 @@ enum filterType { OPEN, CLOSED, MICROWAVE, UTM, UTSG, UTSC }
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
   List<StoreFilter> filters;
-  List<List<Store>> campusStores = List();
   List<Store> stores;
   List<Store> filteredStores;
   final TextEditingController _searchFilter = new TextEditingController();
@@ -26,20 +26,55 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   Icon _searchIcon;
   String _searchText;
   List<bool> campusFilters = [true, true, true];
-  //Filters, // 0 = disabled 1 = enabled
-  int campus = 0;
   CobaltApi api;
-  String building;
-  DateTime date;
 
   void initState() {
     super.initState();
     api = CobaltApi();
-    
     filteredStores = List();
     stores = List();
-    date = DateTime.now();
     loadUnfilteredStores();
+    initFilters();
+    _appBarTitle = Center(
+      child: Text(
+        widget.title,
+      ),
+    );
+  }
+
+  void initFilters() {
+    filters = List();
+    dynamic utm = CampusFilter(
+      filterAction,
+      "University of Toronto Mississauga",
+      "UTM",
+      false,
+    );
+    dynamic utsg = CampusFilter(
+      filterAction,
+      "University of Toronto St. George",
+      "UTSG",
+      false,
+    );
+    dynamic utsc = CampusFilter(
+      filterAction,
+      "University of Toronto Scarborough",
+      "UTSC",
+      false,
+    );
+    dynamic open = OpenFilter(
+      filterAction,
+      false,
+    );
+    dynamic closed = ClosedFilter(
+      filterAction,
+      false,
+    );
+    filters.add(utm);
+    filters.add(utsg);
+    filters.add(utsc);
+    filters.add(open);
+    filters.add(closed);
     _searchFilter.addListener(() {
       if (_searchFilter.text.isEmpty) {
         setState(() {
@@ -54,11 +89,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
     });
     _searchIcon = Icon(Icons.search);
-    _appBarTitle = Center(
-      child: Text(
-        widget.title,
-      ),
-    );
+  }
+
+  void filterAction(bool value) {
+    setState(() {
+      updateFilteredStores();
+    });
   }
 
   @override
@@ -92,13 +128,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         actions: <Widget>[
           IconButton(
             icon: _searchIcon,
-            //iconSize: 28,
             tooltip: "Search",
             onPressed: _searchPressed,
           ),
           IconButton(
             icon: Icon(Icons.refresh),
-            //iconSize: 28,
             tooltip: "Page refreshed!",
             onPressed: loadUnfilteredStores,
           ),
@@ -188,64 +222,18 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     } else {}
   }
 
-
   void updateFilteredStores() {
     //print("Updating Filtering stores");
     List<Store> tempStores = List();
-    stores.forEach((Store store) {
-      if (!isStoreFiltered(store)) {
-        tempStores.add(store);
-      }
-    });
-    setState(() {
-      filteredStores = tempStores;
-    });
-  }
-  bool isStorefiltered(Store store){
-    for(int i = 0; i < filters.length; i ++){
-      if(filters[i].filter(store))return true;
-    }
-    //SearchFilter
-    String text = _searchText;
-    if (text != null && text != "") {
-      text = text.toLowerCase();
-      if (store.name.toLowerCase().contains(text) ||
-          store.description.toLowerCase().contains(text)) {
-        //print(text + " : add Store: " + store.name);
-        return false;
-      } else {
-        //print(text + ": filter store: " + store.name);
+    tempStores.addAll(stores);
+    print("Length: " + tempStores.length.toString());
+    for (int i = 0; i < filters.length; i++) {
+      print("Applying Filter: " + filters[i].shortName);
+      tempStores = filters[i].applyFilter(tempStores);
+          print("Length: " + tempStores.length.toString());
 
-        return true;
-      }
     }
-    //print("(null or empty search)add store: " + store.name);
-    return false;
-  }
-  bool isStoreFiltered(Store store) {
-    for (int i = 0; i < campuses.length; i++) {
-      if (store.campus == campuses[i]) {
-        if (!campusFilters[i]) {
-          // print("Do not add Store: " + store.name + "| At: " + store.campus);
-          return true;
-        }
-      }
-    }
-    String text = _searchText;
-    if (text != null && text != "") {
-      text = text.toLowerCase();
-      if (store.name.toLowerCase().contains(text) ||
-          store.description.toLowerCase().contains(text)) {
-        //print(text + " : add Store: " + store.name);
-        return false;
-      } else {
-        //print(text + ": filter store: " + store.name);
-
-        return true;
-      }
-    }
-    //print("(null or empty search)add store: " + store.name);
-    return false;
+    filteredStores = tempStores;
   }
 
   void loadAllStoreImages() async {
@@ -269,55 +257,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     });
   }
 
-  void changeFilterState() {
-    setState(() {});
-    updateFilteredStores();
-  }
-
-  void changeCampusFilters(bool isFiltered, int i) {
-    setState(() {
-      campusFilters[i] = isFiltered;
-      print(isFiltered.toString() + "Campus : " + i.toString());
-    });
-    updateFilteredStores();
-  }
-
-  List<FilterChip> buildFiltersList2() {
+  List<FilterChip> buildFiltersList() {
     List<FilterChip> widgets = List();
     filters.forEach((StoreFilter filter) {
       widgets.add(filter.filterChip);
     });
-    return widgets;
-  }
-
-  List<Widget> buildFiltersList() {
-    List<FilterChip> filters = List();
-    for (int i = 0; i < campuses.length; i++) {
-      filters.add(
-        FilterChip(
-          selected: campusFilters[i],
-          label: Text(campuses[i]),
-          onSelected: (tap) => changeCampusFilters(tap, i),
-        ),
-      );
-    }
-    return filters;
-  }
-
-  List<Widget> buildTagsList(Store store, BuildContext context) {
-    List<Widget> widgets = List();
-    if (store != null && store.tags != null) {
-      int tagLength = 0;
-      for (int i = 0; i < store.tags.length && i < 5 && tagLength < 50; i++) {
-        tagLength += store.tags[i].toString().length;
-        widgets.add(
-          Chip(
-            label: Text((store.tags[i].toString()),
-                style: Theme.of(context).textTheme.caption),
-          ),
-        );
-      }
-    }
     return widgets;
   }
 }

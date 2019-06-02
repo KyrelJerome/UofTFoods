@@ -28,8 +28,7 @@ class OpenFilter extends StoreFilter {
 
 class ClosedFilter extends StoreFilter {
   ClosedFilter(Function(bool) action, bool state)
-      : super(action, "Show Only Open Stores", "Open", state, (Store store) {
+      : super(action, "Show Only Closed Stores", "Closed", state, (Store store) {
           return !store.isOpenNow();
         });
 }
-
