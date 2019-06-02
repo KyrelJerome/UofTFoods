@@ -225,17 +225,29 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void updateFilteredStores() {
     //print("Updating Filtering stores");
     List<Store> tempStores = List();
-    tempStores.addAll(stores);
+    for(Store store in stores){
+      for(StoreFilter filter in filters){
+        if(!filter.filter(store)){
+          tempStores.add(store);
+          break;
+        }
+      }
+    }
+      
+    /*
     print("Length: " + tempStores.length.toString());
     for (int i = 0; i < filters.length; i++) {
       print("Applying Filter: " + filters[i].shortName);
       tempStores = filters[i].applyFilter(tempStores);
-          print("Length: " + tempStores.length.toString());
-
+      print("Length: " + tempStores.length.toString());
     }
+    */
     filteredStores = tempStores;
   }
 
+  void  addViableStores(){
+
+  }
   void loadAllStoreImages() async {
     List<Image> storeImages = List();
     for (int i = 0; i < stores.length; i++) {
