@@ -11,9 +11,9 @@ class StoreFilter {
   bool _isActive;
 
   bool filter(Store store) {
-    if (_isActive) {
+    if (!_isActive) {
       //Must be active
-      return true;
+      return false;
     }
     return _filter(store);
   }

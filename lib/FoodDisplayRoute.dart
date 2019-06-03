@@ -18,14 +18,14 @@ enum filterType { OPEN, CLOSED, MICROWAVE, UTM, UTSG, UTSC }
 
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
-  List<StoreFilter> filters;
+  List<StoreFilter> generalFilters;
+  List<StoreFilter> campusFilters;
   List<Store> stores;
   List<Store> filteredStores;
   final TextEditingController _searchFilter = new TextEditingController();
   Widget _appBarTitle;
   Icon _searchIcon;
   String _searchText;
-  List<bool> campusFilters = [true, true, true];
   CobaltApi api;
 
   void initState() {
@@ -43,7 +43,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void initFilters() {
-    filters = List();
+    generalFilters = List();
+    campusFilters = List();
     dynamic utm = CampusFilter(
       filterAction,
       "University of Toronto Mississauga",
@@ -70,11 +71,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       filterAction,
       false,
     );
-    filters.add(utm);
-    filters.add(utsg);
-    filters.add(utsc);
-    filters.add(open);
-    filters.add(closed);
+    campusFilters.add(utm);
+    campusFilters.add(utsg);
+    campusFilters.add(utsc);
+    generalFilters.add(open);
+    generalFilters.add(closed);
     _searchFilter.addListener(() {
       if (_searchFilter.text.isEmpty) {
         setState(() {
@@ -225,27 +226,24 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   void updateFilteredStores() {
     //print("Updating Filtering stores");
     List<Store> tempStores = List();
-    for(Store store in stores){
-      for(StoreFilter filter in filters){
-        if(!filter.filter(store)){
+    print("Length: " + tempStores.length.toString());
+    for (Store store in stores) {
+      for (CampusFilter filter in campusFilters) {
+        if (filter.filter(store)) {
           tempStores.add(store);
           break;
         }
       }
     }
-    /*print("Length: " + tempStores.length.toString());
-    for (int i = 0; i < filters.length; i++) {
-      print("Applying Filter: " + filters[i].shortName);
-      tempStores = filters[i].applyFilter(tempStores);
+    for (int i = 0; i < generalFilters.length; i++) {
+      print("Applying Filter: " + generalFilters[i].shortName);
+      tempStores = generalFilters[i].applyFilter(tempStores);
       print("Length: " + tempStores.length.toString());
     }
-    */
     filteredStores = tempStores;
   }
 
-  void  addViableStores(){
-
-  }
+  void addViableStores() {}
   void loadAllStoreImages() async {
     List<Image> storeImages = List();
     for (int i = 0; i < stores.length; i++) {
@@ -269,7 +267,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
 
   List<FilterChip> buildFiltersList() {
     List<FilterChip> widgets = List();
-    filters.forEach((StoreFilter filter) {
+    generalFilters.forEach((StoreFilter filter) {
+      widgets.add(filter.filterChip);
+    });
+    campusFilters.forEach((StoreFilter filter) {
       widgets.add(filter.filterChip);
     });
     return widgets;
