@@ -80,14 +80,19 @@ class StoreViewRoute extends StatelessWidget {
                     child: imageHolder,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                    padding: const EdgeInsets.all(16.0),
+                    child: IconButton(
+                      iconSize: 32,
+                      icon: Opacity(
+                        child: Container(
+                          color: Colors.white70,
+                          child: Icon(Icons.arrow_back),
+                        ),
+                        opacity: 0.5,
                       ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
                 ],
@@ -132,10 +137,8 @@ class StoreViewRoute extends StatelessWidget {
               ),
             ),
             Container(
-             // height: 35,
               child: Center(
                 child: Wrap(
-                  //scrollDirection: Axis.horizontal,
                   spacing: 4.0,
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
