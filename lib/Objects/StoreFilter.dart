@@ -17,9 +17,15 @@ class StoreFilter {
     }
     return _filter(store);
   }
+  
 
-  List<Store> applyFilter(List<Store> stores) {
+  List<Store> applyCounterFilter(List<Store> stores) {
+    print("Applying Filter:" + _label);
     List<Store> filteredStores = List();
+    if(!_isActive){
+      print("Not active!");
+      return stores;
+    }
     stores.forEach((Store store) {
       if (!_filter(store)) {
         filteredStores.add(store);

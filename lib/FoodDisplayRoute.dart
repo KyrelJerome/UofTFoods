@@ -200,6 +200,42 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     });
   }
 
+  Widget openFilterModal() {
+    Widget filterContainer = Container(
+      child: Column(
+        children: <Widget>[
+          Center(
+            child: Text("Campuses"),
+          ),
+          Wrap(
+            children: getGeneralFilters(),
+          ),
+          Center(
+            child: Text("General"),
+          ),
+          Wrap(children: getGeneralFilters())
+        ],
+      ),
+    );
+    return filterContainer;
+  }
+
+  List<Widget> getGeneralFilters() {
+    List widgets = List();
+    for (StoreFilter filter in generalFilters) {
+      widgets.add(filter.filterChip);
+    }
+    return widgets;
+  }
+
+  List<Widget> getCampusFilters() {
+    List widgets = List();
+    for (StoreFilter filter in generalFilters) {
+      widgets.add(filter.filterChip);
+    }
+    return widgets;
+  }
+
   void loadUnfilteredStores() async {
     print("loading unfiltered stores");
     List<Store> loadStream = await api.getFoodsJson();
@@ -230,20 +266,42 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     for (Store store in stores) {
       for (CampusFilter filter in campusFilters) {
         if (filter.filter(store)) {
+          //print(filter.shortName + " :Added Store");
           tempStores.add(store);
           break;
         }
       }
     }
+    print("Length: " + tempStores.length.toString());
     for (int i = 0; i < generalFilters.length; i++) {
       print("Applying Filter: " + generalFilters[i].shortName);
-      tempStores = generalFilters[i].applyFilter(tempStores);
+      tempStores = generalFilters[i].applyCounterFilter(tempStores);
       print("Length: " + tempStores.length.toString());
     }
-    filteredStores = tempStores;
+    
+    List<Store> tempStores2 = List();
+    for(Store store in tempStores){
+     if(!isSearchFiltered(store)){
+       tempStores2.add(store);
+     }
+    }
+    filteredStores = tempStores2;
   }
 
-  void addViableStores() {}
+  bool isSearchFiltered(Store store){
+    String text = _searchText;
+    if (text != null && text != "") {
+      text = text.toLowerCase();
+      if (store.name.toLowerCase().contains(text) ||
+          store.description.toLowerCase().contains(text)) {
+        return true;
+      } else {
+
+        return false;
+      }
+    }
+    return true ;
+  }
   void loadAllStoreImages() async {
     List<Image> storeImages = List();
     for (int i = 0; i < stores.length; i++) {

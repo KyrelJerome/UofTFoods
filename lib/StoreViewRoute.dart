@@ -2,6 +2,7 @@ import 'package:deer_food/Objects/Hours.dart';
 import 'package:deer_food/StoreUI/IsOpenChip.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
+import 'package:flutter/services.dart';
 
 //import 'Objects/Hours.dart';
 //import 'API/cobaltFoodsWrapper.dart';
@@ -10,6 +11,10 @@ const TIME_TO_HOUR = 3600;
 class StoreViewRoute extends StatelessWidget {
   final Store store;
   StoreViewRoute({this.store});
+  initState() {
+    SystemChrome.setEnabledSystemUIOverlays([]);
+  }
+
   @override
   Widget build(BuildContext context) {
     Image storeImage = store.logo;
@@ -79,20 +84,26 @@ class StoreViewRoute extends StatelessWidget {
                     tag: store.hashCode,
                     child: imageHolder,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: IconButton(
-                      iconSize: 32,
-                      icon: Opacity(
-                        child: Container(
-                          color: Colors.white70,
-                          child: Icon(Icons.arrow_back),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 16.0),
+                      child: IconButton(
+                        iconSize: 32,
+                        icon: Opacity(
+                          child: Container(
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white70,
+                            ),
+                            child: Icon(Icons.arrow_back),
+                          ),
+                          opacity: 0.5,
                         ),
-                        opacity: 0.5,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
                     ),
                   ),
                 ],
