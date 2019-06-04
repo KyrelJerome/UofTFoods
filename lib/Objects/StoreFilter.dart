@@ -9,7 +9,8 @@ class StoreFilter {
   Function update;
   Function(Store) _filter; // True means filter, false means do not filter.
   bool _isActive;
-
+  Color selectedColor;
+  Color disabledColor;
   bool filter(Store store) {
     if (!_isActive) {
       //Must be active
@@ -47,6 +48,8 @@ class StoreFilter {
   }
   get filterChip {
     return FilterChip(
+      selectedColor: selectedColor ?? Colors.blue,
+      disabledColor: disabledColor ?? Colors.blue,
       tooltip: _toolTip,
       selected: _isActive,
       label: Text(_label),
