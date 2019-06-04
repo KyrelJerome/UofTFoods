@@ -18,12 +18,11 @@ class StoreFilter {
     }
     return _filter(store);
   }
-  
 
   List<Store> applyCounterFilter(List<Store> stores) {
     print("Applying Filter:" + _label);
     List<Store> filteredStores = List();
-    if(!_isActive){
+    if (!_isActive) {
       print("Not active!");
       return stores;
     }
@@ -43,13 +42,16 @@ class StoreFilter {
     _label = label;
     _isActive = isActive;
   }
-  get shortName{
+  get shortName {
     return _label;
   }
+
   get filterChip {
     return FilterChip(
-      selectedColor: selectedColor ?? Colors.blue,
-      disabledColor: disabledColor ?? Colors.blue,
+      labelStyle: TextStyle(color: Colors.white),
+      selectedColor: selectedColor ?? Colors.indigoAccent,
+      disabledColor: disabledColor ?? Colors.blueGrey[400],
+      backgroundColor: disabledColor ?? Colors.blueGrey[400],
       tooltip: _toolTip,
       selected: _isActive,
       label: Text(_label),
