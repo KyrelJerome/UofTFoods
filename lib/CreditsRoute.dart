@@ -21,10 +21,15 @@ class CreditsRoute extends StatelessWidget {
         width: double.infinity,
         child: InkWell(
           child: Center(
-            child: Icon(
-              TFoods.tfoodstologotest,
-              size: 80.0,
-              color: Colors.indigo,
+            child: Column(
+              children: <Widget>[
+                Text("We are in no way ")
+                Icon(
+                  TFoods.tfoodstologotest,
+                  size: 80.0,
+                  color: Colors.indigo,
+                ),
+              ],
             ),
           ),
         ),
