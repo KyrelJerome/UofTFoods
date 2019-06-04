@@ -1,5 +1,6 @@
 import 'package:deer_food/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
+import 'CreditsRoute.dart';
 import 'Objects/Filters/Filters.dart';
 import 'Objects/Store.dart';
 import 'API/cobaltFoodsWrapper.dart';
@@ -125,10 +126,16 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     return Scaffold(
       appBar: AppBar(
         title: _appBarTitle,
-        leading: Icon(
-          TFoods.tfoodstologotest,
-          size: 24.0,
-          color: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            TFoods.tfoodstologotest,
+            size: 24.0,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreditsRoute()),
+              ),
         ),
         actions: <Widget>[
           IconButton(
@@ -253,7 +260,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void loadUnfilteredStores() async {
-    print("loading unfiltered stores");
+    print("Loading Unfiltered Stores");
     List<Store> loadStream = await api.getFoodsJson();
     if (loadStream != null) {
       for (int i = 0; i < loadStream.length; i++) {
@@ -276,25 +283,19 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void updateFilteredStores() {
-    //print("Updating Filtering stores");
     List<Store> tempStores = List();
     print("Length: " + tempStores.length.toString());
     for (Store store in stores) {
       for (CampusFilter filter in campusFilters) {
         if (filter.filter(store)) {
-          //print(filter.shortName + " :Added Store");
           tempStores.add(store);
           break;
         }
       }
     }
-    print("Length: " + tempStores.length.toString());
     for (int i = 0; i < generalFilters.length; i++) {
-      print("Applying Filter: " + generalFilters[i].shortName);
       tempStores = generalFilters[i].applyCounterFilter(tempStores);
-      print("Length: " + tempStores.length.toString());
     }
-
     List<Store> tempStores2 = List();
     for (Store store in tempStores) {
       if (isSearchFiltered(store)) {
