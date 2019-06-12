@@ -9,9 +9,10 @@ description: A new Flutter project.
 # Read more about versioning at semver.org.
 version: 2.1.6+3.2
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.2.0"
 
 dependencies:
+  launch_review: ^2.0.0
   shared_preferences: ^0.4.3
   url_launcher: ^4.0.3
   http: ^0.12.0

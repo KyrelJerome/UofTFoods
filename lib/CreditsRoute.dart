@@ -1,6 +1,7 @@
 import 'package:deer_food/presentation/t_foods_icons.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
+import 'package:launch_review/launch_review.dart';
 
 //import 'Objects/Hours.dart';
 //import 'API/cobaltFoodsWrapper.dart';
@@ -57,7 +58,9 @@ class CreditsRoute extends StatelessWidget {
                       // Text("Suggestion?"),
                       RaisedButton(
                         child: Text("Leave a Review!"),
-                        onPressed: () {},
+                        onPressed: () {
+                          LaunchReview.launch();
+                        },
                       )
                     ],
                   ),
