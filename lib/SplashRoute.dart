@@ -99,7 +99,7 @@ class SplashRoute extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(right: 8),
-                        child: Icon(Icons.timer, color: Colors.white54),
+                        child: Icon(Icons.location_on, color: Colors.white54),
                       ),
                       Text(
                         "See Store Location",
