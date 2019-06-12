@@ -10,10 +10,12 @@ class Hours {
     "saturday",
     "sunday"
   ];
-
+  get hours{
+    return _hours;
+  }
   dynamic _hours;
 
-  Hours(dynamic hours){
+  Hours(dynamic hours) {
     _hours = hours;
   }
 
@@ -33,36 +35,42 @@ class Hours {
     return DateTime.now().minute;
   }
 
-  bool hasHours(){
-    return _hours != null;
+  bool hasHours() {
+    if (_hours == null) return false;
+    for (String day in weekdays) {
+      if (this.getOpenHour(day) > 0 || this.getCloseHour(day) > 0) {
+        return true;
+      }
+    }
+    return false;
   }
-  
-  bool getClosed(String day){
-    if( hasHours())
-    return _hours[day]["closed"] == 0 ;
+
+  bool getClosed(String day) {
+    if (_hasHours()) return _hours[day]["closed"] == 0;
     return true;
   }
+
+  bool _hasHours() {
+    return _hours != null;
+  }
+
   double getOpenHour(String day) {
-    if(hasHours())
-    return _hours[day]["open"] / TIME_TO_HOUR;
+    if (_hasHours()) return _hours[day]["open"] / TIME_TO_HOUR;
     return -1;
   }
 
   double getOpenMinute(String day) {
-        if(hasHours())
-    return _hours[day]["open"] / TIME_TO_MINUTE;
+    if (_hasHours()) return _hours[day]["open"] / TIME_TO_MINUTE;
     return -1;
   }
 
   double getCloseHour(String day) {
-    if(hasHours())
-    return _hours[day]["close"] / TIME_TO_HOUR;
+    if (_hasHours()) return _hours[day]["close"] / TIME_TO_HOUR;
     return -1;
   }
 
   double getCloseMinute(String day) {
-    if(hasHours())
-    return _hours[day]["close"] / TIME_TO_MINUTE;
+    if (_hasHours()) return _hours[day]["close"] / TIME_TO_MINUTE;
     return -1;
   }
 }

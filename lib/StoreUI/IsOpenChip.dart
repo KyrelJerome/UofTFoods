@@ -7,37 +7,22 @@ class IsOpenChip extends StatelessWidget {
   const IsOpenChip({Key key, this.store}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    if (store.hours != null && store.hours.hasHours() != null) {
-      if (store.isOpenNow()) {
-        double closesIn = store.closesIn();
-        if (closesIn < 60) {
-          return Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Center(
-                child: Chip(
-                  label: Text("Open", style: TextStyle(color: Colors.white)),
-                  backgroundColor: Colors.green,
-                ),
-              )
-            ],
-          );
-        } else {
-          return Center(
-            child: Chip(
-              label: Text("Open", style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
+    if (store.hours != null && store.hours.hasHours()) {
+      if (!store.isOpenNow()) {
+        return Center(
+          child: Chip(
+            label: Text("Closed", style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
+      return Center(
+        child: Chip(
+          label: Text("Open", style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
-    return Center(
-      child: Chip(
-        label: Text("Closed", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.red,
-      ),
-    );
+      return Container(width: 0.0, height:0.0);
   }
 }

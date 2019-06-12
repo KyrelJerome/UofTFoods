@@ -1,5 +1,6 @@
 import 'package:deer_food/Objects/Store.dart';
 import 'package:deer_food/StoreUI/IsOpenChip.dart';
+import 'package:deer_food/StoreUI/TimeBasedAlert.dart';
 import 'package:deer_food/StoreViewRoute.dart';
 import 'package:flutter/material.dart';
 
@@ -72,10 +73,18 @@ class _StoreCardState extends State<StoreCard> {
                         store.campus ?? "",
                         style: Theme.of(context).textTheme.subtitle,
                       ),
-                      Center(
-                        child: IsOpenChip(
-                          store: store,
-                        ),
+                      Stack(
+                        children: <Widget>[
+                          Center(
+                            child: IsOpenChip(
+                              store: store,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: TimeBasedAlert(store: store),
+                          ),
+                        ],
                       ),
                     ],
                   ),

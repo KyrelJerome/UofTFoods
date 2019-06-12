@@ -46,7 +46,7 @@ class StoreFilter {
     return _label;
   }
 
-  get filterChip {
+  FilterChip getfilterChip(Function updateFunction) {
     return FilterChip(
       labelStyle: TextStyle(color: Colors.white),
       selectedColor: selectedColor ?? Colors.indigoAccent,
@@ -59,6 +59,7 @@ class StoreFilter {
         print("FilterChip Clicked!");
         this._isActive = !_isActive;
         _action(_isActive);
+        updateFunction();
       },
     );
   }

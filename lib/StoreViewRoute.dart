@@ -12,6 +12,7 @@ class StoreViewRoute extends StatelessWidget {
   final Store store;
   StoreViewRoute({this.store});
   initState() {
+    print(store.hours.hours);
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
@@ -36,7 +37,8 @@ class StoreViewRoute extends StatelessWidget {
     Widget hourObject = Center(
       child: Text("Hours Not Provided"),
     );
-    if (store.hours != null && store.hours.hasHours() != null) {
+
+    if (store.hours != null && store.hours.hasHours()) {
       List<Widget> hourList = [];
       Hours hours = store.hours;
       hourList.add(IsOpenChip(store: store));
@@ -48,7 +50,7 @@ class StoreViewRoute extends StatelessWidget {
               children: <Widget>[
                 Text(day.substring(0, 1).toUpperCase() + day.substring(1),
                     style: Theme.of(context).textTheme.subtitle),
-                Text("CLOSED"),
+                Text("N/A"),
               ],
             ));
           } else {
@@ -80,10 +82,7 @@ class StoreViewRoute extends StatelessWidget {
               width: double.infinity,
               child: Stack(
                 children: <Widget>[
-                  Hero(
-                    tag: store.hashCode,
-                    child: imageHolder,
-                  ),
+                  imageHolder,
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

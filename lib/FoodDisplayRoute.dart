@@ -25,6 +25,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> filteredStores;
   final TextEditingController _searchFilter = new TextEditingController();
   Widget _appBarTitle;
+  Widget _BottomDrawer;
+
   Icon _searchIcon;
   String _searchText;
   CobaltApi api;
@@ -40,6 +42,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         widget.title,
       ),
     );
+    _BottomDrawer = BottomDrawerWidget(
+        generalFilters: generalFilters, campusFilters: campusFilters);
   }
 
   void initFilters() {
@@ -117,7 +121,11 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("No Results Found!"),
+              Text("No results found."),
+              Container(
+                margin: EdgeInsets.all(8),
+                child: Text("Tip: Change filters and refresh!"),
+              )
             ],
           ),
         ),
@@ -165,7 +173,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
                     child: Expanded(
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 8),
-                        child: Text("${filteredStores.length} Results"),
+                        child: Text("${filteredStores.length} RESULTS"),
                       ),
                     ),
                   ),
@@ -217,47 +225,24 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   Widget buildFilterBottomSheet() {
-    Widget filterContainer = Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-              margin: EdgeInsets.symmetric(horizontal: 16), child: Divider()),
-          Center(
-            child: Text("Campuses"),
-          ),
-          Wrap(
-            spacing: 4,
-            children: getCampusFilters(),
-          ),
-          Center(
-            child: Text("General"),
-          ),
-          Wrap(
-            spacing: 4,
-            children: getGeneralFilters(),
-          )
-        ],
-      ),
-    );
-    return filterContainer;
+    return _BottomDrawer;
   }
 
-  List<Widget> getGeneralFilters() {
-    List<Widget> widgets = List();
-    for (StoreFilter filter in generalFilters) {
-      widgets.add(filter.filterChip);
-    }
-    return widgets;
-  }
+  // List<Widget> getGeneralFilters() {
+  //   List<Widget> widgets = List();
+  //   for (StoreFilter filter in generalFilters) {
+  //     widgets.add(filter.filterChip);
+  //   }
+  //   return widgets;
+  // }
 
-  List<Widget> getCampusFilters() {
-    List<Widget> widgets = List();
-    for (StoreFilter filter in campusFilters) {
-      widgets.add(filter.filterChip);
-    }
-    return widgets;
-  }
+  // List<Widget> getCampusFilters() {
+  //   List<Widget> widgets = List();
+  //   for (StoreFilter filter in campusFilters) {
+  //     widgets.add(filter.filterChip);
+  //   }
+  //   return widgets;
+  // }
 
   void loadUnfilteredStores() async {
     print("Loading Unfiltered Stores");
@@ -340,14 +325,97 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     });
   }
 
-  List<FilterChip> buildFiltersList() {
-    List<FilterChip> widgets = List();
-    generalFilters.forEach((StoreFilter filter) {
-      widgets.add(filter.filterChip);
-    });
-    campusFilters.forEach((StoreFilter filter) {
-      widgets.add(filter.filterChip);
-    });
+  // List<FilterChip> buildFiltersList() {
+  //   List<FilterChip> widgets = List();
+  //   generalFilters.forEach((StoreFilter filter) {
+  //     widgets.add(filter.filterChip);
+  //   });
+  //   campusFilters.forEach((StoreFilter filter) {
+  //     widgets.add(filter.filterChip);
+  //   });
+  //   return widgets;
+  // }
+}
+
+class BottomDrawerWidget extends StatefulWidget {
+  BottomDrawerWidget(
+      {@required this.campusFilters, @required this.generalFilters});
+  @override
+  _BottomDrawerWidgetState createState() => _BottomDrawerWidgetState();
+  final List<StoreFilter> campusFilters;
+  final List<StoreFilter> generalFilters;
+}
+
+class _BottomDrawerWidgetState extends State<BottomDrawerWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "REFINE RESULTS",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                Icon(Icons.filter_list ,color: Colors.grey[500]),
+              ],
+            ),
+          ),
+          Container(
+            child: Divider(color: Colors.grey[800]),
+          ),
+          Center(
+            child: Container(
+              child: Text(
+                "CAMPUS",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          Wrap(
+            spacing: 8,
+            children: getCampusFilters(),
+          ),
+
+          Center(
+            child: Container(
+              child: Text(
+                "GENERAL",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          Wrap(
+            spacing: 8,
+            children: getGeneralFilters(),
+          )
+        ],
+      ),
+    );
+  }
+
+  updateFunction() {
+    this.setState(() {});
+  }
+
+  List<Widget> getGeneralFilters() {
+    List<Widget> widgets = List();
+    for (StoreFilter filter in widget.generalFilters) {
+      widgets.add(filter.getfilterChip(updateFunction));
+    }
+    return widgets;
+  }
+
+  List<Widget> getCampusFilters() {
+    List<Widget> widgets = List();
+    for (StoreFilter filter in widget.campusFilters) {
+      widgets.add(filter.getfilterChip(updateFunction));
+    }
     return widgets;
   }
 }
