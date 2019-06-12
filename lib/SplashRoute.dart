@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'FoodDisplayRoute.dart';
 import 'presentation/t_foods_icons.dart';
 
 class SplashRoute extends StatelessWidget {
@@ -133,7 +134,11 @@ class SplashRoute extends StatelessWidget {
                   ),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodDisplayRoute(title: this.title)),
+                  ),
             ),
           ],
         ),
