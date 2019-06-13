@@ -14,12 +14,13 @@ class CreditsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("About UofT Foods"),
-      ),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text("About UofT Foods"),
+      // ),
       body: Container(
-        margin: EdgeInsets.all(8),
+        color: Colors.indigo,
+        padding: EdgeInsets.all(8),
         height: double.infinity,
         width: double.infinity,
         child: InkWell(
