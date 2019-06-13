@@ -163,7 +163,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 0),
+              margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               padding: EdgeInsets.symmetric(vertical: 0),
               width: double.infinity,
               child: Row(
