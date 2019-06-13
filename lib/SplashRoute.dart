@@ -19,7 +19,7 @@ class SplashRoute extends StatelessWidget {
           children: <Widget>[
             Center(
               child: Text(
-                "Welcome to",
+                "Welcome To",
                 style: Theme.of(context).textTheme.display1.copyWith(
                     color: Colors.white,
                     textBaseline: TextBaseline.ideographic),
