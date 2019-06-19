@@ -36,12 +36,14 @@ class CreditsRoute extends StatelessWidget {
                     children: <Widget>[
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Icon(
                             TFoods.tfoodstologotest,
                             size: 100.0,
                             color: Colors.indigo[100],
                           ),
+                          Spacer(),
                           Text(
                             "Powered by ",
                             style: TextStyle(
@@ -51,9 +53,9 @@ class CreditsRoute extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: EdgeInsets.all(4),
                             child: FlutterLogo(
-                              size: 100,
+                              size: 60,
                             ),
                           ),
                         ],
@@ -84,7 +86,7 @@ class CreditsRoute extends StatelessWidget {
                                   overflow: TextOverflow.visible,
                                   maxLines: 8,
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 15,
                                     color: Colors.indigo[100],
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -95,7 +97,7 @@ class CreditsRoute extends StatelessWidget {
                                 child: Text(
                                   "All data presented is updated periodically from the Cobalt API, we are not liable for innaccuracies, but try to keep data accurate.",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 15,
                                     color: Colors.indigo[100],
                                     fontWeight: FontWeight.w600,
                                   ),
