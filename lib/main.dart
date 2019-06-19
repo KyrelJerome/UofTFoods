@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'FoodDisplayRoute.dart';
 import 'SplashRoute.dart';
 
 void main() => runApp(MyApp());

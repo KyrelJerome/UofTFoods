@@ -26,7 +26,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   List<Store> filteredStores;
   final TextEditingController _searchFilter = new TextEditingController();
   Widget _appBarTitle;
-  Widget _BottomDrawer;
+  Widget _bottomDrawer;
   int loadingInt = 0;
 
   Icon _searchIcon;
@@ -44,9 +44,8 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         widget.title,
       ),
     );
-    _BottomDrawer = BottomDrawerWidget(
+    _bottomDrawer = BottomDrawerWidget(
         generalFilters: generalFilters, campusFilters: campusFilters);
-    int loadingInt = 0;
   }
 
   void initFilters() {
@@ -249,7 +248,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   Widget buildFilterBottomSheet() {
-    return _BottomDrawer;
+    return _bottomDrawer;
   }
 
   void loadUnfilteredStores() async {
