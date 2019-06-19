@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert' show json;
 import 'package:http/http.dart' as http;
-import 'package:deer_food/Objects/Store.dart';
+import 'package:UofT_Foods/Objects/Store.dart';
 
 ///
 /// The REST API returns words that rhyme or are related to [Topic].

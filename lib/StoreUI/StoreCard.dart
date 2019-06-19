@@ -1,7 +1,7 @@
-import 'package:deer_food/Objects/Store.dart';
-import 'package:deer_food/StoreUI/IsOpenChip.dart';
-import 'package:deer_food/StoreUI/TimeBasedAlert.dart';
-import 'package:deer_food/StoreViewRoute.dart';
+import 'package:UofT_Foods/Objects/Store.dart';
+import 'package:UofT_Foods/StoreUI/IsOpenChip.dart';
+import 'package:UofT_Foods/StoreUI/TimeBasedAlert.dart';
+import 'package:UofT_Foods/StoreViewRoute.dart';
 import 'package:flutter/material.dart';
 
 class StoreCard extends StatefulWidget {

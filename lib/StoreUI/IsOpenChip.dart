@@ -1,4 +1,4 @@
-import 'package:deer_food/Objects/Store.dart';
+import 'package:UofT_Foods/Objects/Store.dart';
 import 'package:flutter/material.dart';
 
 class IsOpenChip extends StatelessWidget {

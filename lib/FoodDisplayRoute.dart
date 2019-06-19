@@ -1,4 +1,4 @@
-import 'package:deer_food/StoreUI/StoreCard.dart';
+import 'package:UofT_Foods/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
 import 'CreditsRoute.dart';
 import 'Objects/Filters/Filters.dart';

@@ -1,4 +1,4 @@
-import 'package:deer_food/presentation/t_foods_icons.dart';
+import 'package:UofT_Foods/presentation/t_foods_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'Objects/Store.dart';

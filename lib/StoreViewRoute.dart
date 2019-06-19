@@ -1,5 +1,5 @@
-import 'package:deer_food/Objects/Hours.dart';
-import 'package:deer_food/StoreUI/IsOpenChip.dart';
+import 'package:UofT_Foods/Objects/Hours.dart';
+import 'package:UofT_Foods/StoreUI/IsOpenChip.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'package:flutter/services.dart';
