@@ -80,36 +80,11 @@ class StoreViewRoute extends StatelessWidget {
           children: <Widget>[
             Container(
               width: double.infinity,
-              child: Stack(
-                children: <Widget>[
-                  imageHolder,
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 16.0),
-                      child: IconButton(
-                        iconSize: 32,
-                        icon: Opacity(
-                          child: Container(
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white70,
-                            ),
-                            child: Icon(Icons.arrow_back),
-                          ),
-                          opacity: 0.5,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: imageHolder,
             ),
-            Center(
-              child: new Text(
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 16),
+              child: Text(
                 store.name.toString().trim(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.title,
@@ -125,7 +100,7 @@ class StoreViewRoute extends StatelessWidget {
                   children: [
                     Text(store.description.trim(),
                         textAlign: TextAlign.center,
-                        maxLines: 7,
+                        maxLines: 9,
                         style: Theme.of(context).textTheme.body1),
                     // Divider(),
                     // Text(store.website,

@@ -6,6 +6,7 @@ import 'Objects/Store.dart';
 import 'API/cobaltFoodsWrapper.dart';
 import 'Objects/StoreFilter.dart';
 import 'presentation/t_foods_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FoodDisplayRoute extends StatefulWidget {
   FoodDisplayRoute({Key key, this.title}) : super(key: key);
@@ -26,6 +27,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   final TextEditingController _searchFilter = new TextEditingController();
   Widget _appBarTitle;
   Widget _BottomDrawer;
+  int loadingInt = 0;
 
   Icon _searchIcon;
   String _searchText;
@@ -44,6 +46,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     );
     _BottomDrawer = BottomDrawerWidget(
         generalFilters: generalFilters, campusFilters: campusFilters);
+    int loadingInt = 0;
   }
 
   void initFilters() {
@@ -97,13 +100,30 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void filterAction(bool value) {
-    setState(() {
-      updateFilteredStores();
-    });
+    updateFilteredStores();
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget storeLoader;
+    if (loadingInt == 0) {
+      storeLoader = Container(width: 0, height: 0);
+    } else {
+      storeLoader = Column(
+        children: <Widget>[
+          //loading stuff
+          SpinKitFadingCircle(
+            itemBuilder: (_, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.indigo : Colors.blueGrey,
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    }
     Widget storeListWrapper;
     if (filteredStores != null && filteredStores.length > 0) {
       storeListWrapper = Expanded(
@@ -135,16 +155,19 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       appBar: AppBar(
         title: _appBarTitle,
         leading: IconButton(
-          icon: Icon(
-            TFoods.tfoodstologotest,
-            size: 24.0,
-            color: Colors.white,
-          ),
-          onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreditsRoute()),
-              ),
-        ),
+            icon: Icon(
+              TFoods.tfoodstologotest,
+              size: 24.0,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(
+                () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreditsRoute()),
+                    ),
+              );
+            }),
         actions: <Widget>[
           IconButton(
             icon: _searchIcon,
@@ -189,6 +212,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
             Divider(
               height: 0,
             ),
+            storeLoader,
             storeListWrapper,
           ],
         ),
@@ -228,22 +252,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
     return _BottomDrawer;
   }
 
-  // List<Widget> getGeneralFilters() {
-  //   List<Widget> widgets = List();
-  //   for (StoreFilter filter in generalFilters) {
-  //     widgets.add(filter.filterChip);
-  //   }
-  //   return widgets;
-  // }
-
-  // List<Widget> getCampusFilters() {
-  //   List<Widget> widgets = List();
-  //   for (StoreFilter filter in campusFilters) {
-  //     widgets.add(filter.filterChip);
-  //   }
-  //   return widgets;
-  // }
-
   void loadUnfilteredStores() async {
     print("Loading Unfiltered Stores");
     List<Store> loadStream = await api.getFoodsJson();
@@ -261,13 +269,16 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
       setState(() {
         stores = loadStream;
-        updateFilteredStores();
       });
+      updateFilteredStores();
       loadAllStoreImages();
-    } else {}
+    }
   }
 
   void updateFilteredStores() {
+    setState(() {
+      loadingInt -= 1;
+    });
     List<Store> tempStores = List();
     print("Length: " + tempStores.length.toString());
     for (Store store in stores) {
@@ -287,7 +298,10 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         tempStores2.add(store);
       }
     }
-    filteredStores = tempStores2;
+    setState(() {
+      loadingInt += 1;
+      filteredStores = tempStores2;
+    });
   }
 
   bool isSearchFiltered(Store store) {
@@ -324,17 +338,6 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
       }
     });
   }
-
-  // List<FilterChip> buildFiltersList() {
-  //   List<FilterChip> widgets = List();
-  //   generalFilters.forEach((StoreFilter filter) {
-  //     widgets.add(filter.filterChip);
-  //   });
-  //   campusFilters.forEach((StoreFilter filter) {
-  //     widgets.add(filter.filterChip);
-  //   });
-  //   return widgets;
-  // }
 }
 
 class BottomDrawerWidget extends StatefulWidget {
@@ -362,7 +365,7 @@ class _BottomDrawerWidgetState extends State<BottomDrawerWidget> {
                   "REFINE RESULTS",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                Icon(Icons.filter_list ,color: Colors.grey[500]),
+                Icon(Icons.filter_list, color: Colors.grey[500]),
               ],
             ),
           ),
@@ -381,7 +384,6 @@ class _BottomDrawerWidgetState extends State<BottomDrawerWidget> {
             spacing: 8,
             children: getCampusFilters(),
           ),
-
           Center(
             child: Container(
               child: Text(
