@@ -1,5 +1,6 @@
 import 'package:UofT_Foods/StoreUI/StoreCard.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'CreditsRoute.dart';
 import 'Objects/Filters/Filters.dart';
 import 'Objects/Store.dart';
@@ -16,10 +17,7 @@ class FoodDisplayRoute extends StatefulWidget {
   _FoodDisplayRouteState createState() => _FoodDisplayRouteState();
 }
 
-enum filterType { OPEN, CLOSED, MICROWAVE, UTM, UTSG, UTSC }
-
 class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
-  static const List<String> campuses = ["UTM", "UTSG", "UTSC"];
   List<StoreFilter> generalFilters;
   List<StoreFilter> campusFilters;
   List<Store> stores;
@@ -32,6 +30,7 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   Icon _searchIcon;
   String _searchText;
   CobaltApi api;
+  SharedPreferences prefs;
   void initState() {
     super.initState();
     api = CobaltApi();
@@ -44,44 +43,57 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
         widget.title,
       ),
     );
-    _bottomDrawer = BottomDrawerWidget(
-        generalFilters: generalFilters, campusFilters: campusFilters);
+    _bottomDrawer = Container(child: SpinKitChasingDots(color: Colors.indigo,));
+    enablePreferences();
   }
 
-  void initFilters() {
-    generalFilters = List();
-    campusFilters = List();
+  void enablePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool('hasOpened', true);
+    List<StoreFilter> generalFilters = List();
+    List<StoreFilter> campusFilters = List();
     dynamic utm = CampusFilter(
       filterAction,
       "University of Toronto Mississauga",
       "UTM",
-      true,
+      prefs.getBool("UTM") ?? true,
     );
     dynamic utsg = CampusFilter(
       filterAction,
       "University of Toronto St. George",
       "UTSG",
-      true,
+      prefs.getBool("UTSG") ?? true,
     );
     dynamic utsc = CampusFilter(
       filterAction,
       "University of Toronto Scarborough",
       "UTSC",
-      true,
+      prefs.getBool("UTSC") ?? true,
     );
     dynamic open = OpenFilter(
       filterAction,
-      false,
+      prefs.getBool("Open") ?? false,
     );
     dynamic closed = ClosedFilter(
       filterAction,
-      false,
+      prefs.getBool("Closed") ?? false,
     );
     campusFilters.add(utm);
     campusFilters.add(utsg);
     campusFilters.add(utsc);
     generalFilters.add(open);
     generalFilters.add(closed);
+    setState(() {
+      this.generalFilters = generalFilters;
+      this.campusFilters = campusFilters;
+      _bottomDrawer = BottomDrawerWidget(
+          generalFilters: generalFilters, campusFilters: campusFilters);
+    });
+  }
+
+  void initFilters() {
+    generalFilters = List();
+    campusFilters = List();
     _searchFilter.addListener(() {
       if (_searchFilter.text.isEmpty) {
         setState(() {
@@ -99,6 +111,12 @@ class _FoodDisplayRouteState extends State<FoodDisplayRoute> {
   }
 
   void filterAction(bool value) {
+    for (StoreFilter filter in campusFilters) {
+      prefs.setBool(filter.getLabel(), filter.isActive());
+    }
+    for (StoreFilter filter in generalFilters) {
+      prefs.setBool(filter.getLabel(), filter.isActive());
+    }
     updateFilteredStores();
   }
 

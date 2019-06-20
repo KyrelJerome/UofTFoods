@@ -11,6 +11,12 @@ class StoreFilter {
   bool _isActive;
   Color selectedColor;
   Color disabledColor;
+  bool isActive(){
+    return _isActive;
+  }
+  String getLabel(){
+    return _label;
+  }
   bool filter(Store store) {
     if (!_isActive) {
       //Must be active

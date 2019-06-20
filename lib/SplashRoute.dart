@@ -1,11 +1,33 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'FoodDisplayRoute.dart';
 import 'presentation/t_foods_icons.dart';
 
-class SplashRoute extends StatelessWidget {
+class SplashRoute extends StatefulWidget {
   final String title;
   SplashRoute({this.title});
+
+  @override
+  _SplashRouteState createState() => _SplashRouteState();
+}
+
+class _SplashRouteState extends State<SplashRoute> {
+  SharedPreferences prefs;
+  void initState() {
+    super.initState();
+    checkSplash();
+  }
+  void checkSplash() async {
+    prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('hasOpened') == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FoodDisplayRoute(title: widget.title)),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
@@ -169,7 +191,7 @@ class SplashRoute extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              FoodDisplayRoute(title: this.title)),
+                              FoodDisplayRoute(title: this.widget.title)),
                     ),
               ),
             ],
@@ -305,7 +327,7 @@ class SplashRoute extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            FoodDisplayRoute(title: this.title)),
+                            FoodDisplayRoute(title: this.widget.title)),
                   ),
             ),
           ],
