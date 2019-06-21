@@ -9,8 +9,9 @@ class CobaltApi {
   static const String key = 'bylTKgsa08vezNaD8VVdwrfx5vqnXN48';
   static const String keyParam = '?key=' + key;
 
-  static const Map<String, String> keymap = {'Authorization': key  };
-  static const Map<String, String> data = {'Authorization':key };
+  static const Map<String, String> keymap = {'Authorization': key};
+  static const Map<String, String> data = {'Authorization': key};
+
   /// The API endpoint we want to hit.
   static const String _url = 'cobalt.qas.im/api/1.0/food';
   static const String _defaultSuffix = '?limit=100';
@@ -48,7 +49,7 @@ class CobaltApi {
 
   /// Returns a list. Returns null on error.
   Future<List<Store>> getFoodsJson() async {
-    final uri = 'https://' + _url + _defaultSuffix;// + keyParam + key;
+    final uri = 'https://' + _url + _defaultSuffix; // + keyParam + key;
     final jsonResponse = await _getJson(uri);
     List<Store> jsonList = List();
     if (jsonResponse != null) {
@@ -59,15 +60,15 @@ class CobaltApi {
           jsonList.add(Store.fromJson(jsonResponse[i]));
         }
       }
-    }
-    else{
+    } else {
       return null;
     }
     return jsonList;
   }
+
   Future<List<Store>> getFoodsJsonSpecific(int startIndex, int endIndex) async {
-    final uri = 'https://' + _url;// + keyParam + key;
-    http.post(uri,body: {"skip": startIndex.toString(),"limit":endIndex});
+    final uri = 'https://' + _url; // + keyParam + key;
+    http.post(uri, body: {"skip": startIndex.toString(), "limit": endIndex});
     final jsonResponse = await _getJson(uri);
     List<Store> jsonList = List();
     if (jsonResponse != null) {
@@ -81,51 +82,20 @@ class CobaltApi {
     }
     return jsonList;
   }
+
   /// Fetches and decodes a JSON object represented as a Dart [Map].
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
     try {
-
-      final responseBody = (await http.get(url,headers: keymap )).body;
-              //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
-      //print(responseBody);
+      final responseBody = (await http.get(url, headers: keymap)).body;
       var decodedJson = json.decode(responseBody);
-      if (decodedJson is List<dynamic>)
-      {
+      if (decodedJson is List<dynamic>) {
         return json.decode(responseBody);
       }
-    //  print('Query completed, but return value of wrong type:');
       return List();
-      // Finally, the string is parsed into a JSON object.
-      
     } on Exception catch (e) {
       print('$e');
       return null;
     }
   }
-
-  // /// Fetches and decodes a JSON object represented as a Dart [Map].
-  // /// Returns null if the API server is down, or the response is not JSON.
-  // Future<List<dynamic>> _getJsonFiltered(String url, Map<String,String> filters) async {
-  //   try {
-
-
-  //     final responseBody = (await http.get(url,headers: keymap )).body;
-  //             //(limitString != null ? prefixLimit + '=' + (limitString) : '')))
-  //     print(responseBody);
-  //     var decodedJson = json.decode(responseBody);
-  //     if (decodedJson is List<dynamic>)
-  //     {
-  //       return json.decode(responseBody);
-  //     }
-  //     print('Query completed, but return value of wrong type:');
-  //     return List();
-  //     // Finally, the string is parsed into a JSON object.
-      
-  //   } on Exception catch (e) {
-  //     print('$e');
-  //     return null;
-  //   }
-    
-
-  }
+}
