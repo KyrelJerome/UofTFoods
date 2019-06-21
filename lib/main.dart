@@ -16,16 +16,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class SplashLoader extends StatefulWidget {
-  @override
-  _SplashLoaderState createState() => _SplashLoaderState();
-}
-
-class _SplashLoaderState extends State<SplashLoader> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

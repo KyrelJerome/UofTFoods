@@ -3,6 +3,7 @@ import 'package:UofT_Foods/StoreUI/IsOpenChip.dart';
 import 'package:flutter/material.dart';
 import 'Objects/Store.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'Objects/Hours.dart';
 //import 'API/cobaltFoodsWrapper.dart';
@@ -71,6 +72,16 @@ class StoreViewRoute extends StatelessWidget {
         children: hourList,
       );
     }
+    Widget websiteObject = Container(width: 0, height: 0);
+    if (store.website != null) {
+      websiteObject = Center(
+        child: FlatButton(
+          child: Text("Go to Website",
+              style: TextStyle(color: Colors.indigoAccent)),
+          onPressed: _launchURL,
+        ),
+      );
+    }
     return Scaffold(
       body: Center(
         child: Column(
@@ -114,6 +125,7 @@ class StoreViewRoute extends StatelessWidget {
                       child: Text(store.address,
                           style: Theme.of(context).textTheme.body1),
                     ),
+                    websiteObject,
                     Divider(),
                     hourObject,
                     Divider(),
@@ -135,6 +147,15 @@ class StoreViewRoute extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _launchURL() async {
+    String url = store.website;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print( 'Could not launch $url');
+    }
   }
 
   List<Widget> buildTagsList(Store store, BuildContext context) {
