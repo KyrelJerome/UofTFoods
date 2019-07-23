@@ -82,6 +82,16 @@ class StoreViewRoute extends StatelessWidget {
         ),
       );
     }
+    Widget LocationObject = Container(width: 0, height: 0);
+    if (store.website != null) {
+      websiteObject = Center(
+        child: FlatButton(
+          child: Text("Go to Website",
+              style: TextStyle(color: Colors.indigoAccent)),
+          onPressed: _launchURL,
+        ),
+      );
+    }
     return Scaffold(
       body: Center(
         child: Column(
@@ -154,7 +164,7 @@ class StoreViewRoute extends StatelessWidget {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      print( 'Could not launch $url');
+      print('Could not launch $url');
     }
   }
 
