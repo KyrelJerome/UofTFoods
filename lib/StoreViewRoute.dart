@@ -72,26 +72,30 @@ class StoreViewRoute extends StatelessWidget {
         children: hourList,
       );
     }
-    Widget websiteObject = Container(width: 0, height: 0);
+    List<Widget> websiteObject = [Container(width: 0, height: 0)];
     if (store.website != null) {
-      websiteObject = Center(
-        child: FlatButton(
-          child: Text("Go to Website",
-              style: TextStyle(color: Colors.indigoAccent)),
-          onPressed: _launchURL,
-        ),
-      );
+      websiteObject = [
+        Divider(),
+        Center(
+          child: FlatButton(
+            child: Text("Go to Website",
+                style: TextStyle(color: Colors.indigoAccent)),
+            onPressed: _launchURL,
+          ),
+        )
+      ];
     }
     Widget LocationObject = Container(width: 0, height: 0);
-    if (store.website != null) {
-      websiteObject = Center(
+    /* if (store.website != null) {
+      websiteObject = [Center(
         child: FlatButton(
           child: Text("Go to Website",
               style: TextStyle(color: Colors.indigoAccent)),
           onPressed: _launchURL,
         ),
-      );
+      ), Divider()];
     }
+    */
     return Scaffold(
       body: Center(
         child: Column(
@@ -135,7 +139,7 @@ class StoreViewRoute extends StatelessWidget {
                       child: Text(store.address,
                           style: Theme.of(context).textTheme.body1),
                     ),
-                    websiteObject,
+                    ...websiteObject,
                     Divider(),
                     hourObject,
                     Divider(),

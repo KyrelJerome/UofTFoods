@@ -9,7 +9,7 @@ description: A new Flutter project.
 # Read more about versioning at semver.org.
 version: 4.5.0+4.5
 environment:
-  sdk: ">=2.2.0"
+  sdk: ">=2.2.2"
 
 dependencies:
   toast: ^0.1.3
