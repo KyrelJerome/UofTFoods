@@ -33,7 +33,7 @@ class Store {
     @required this.hours,
     @required this.tags,
   });
-  
+   
   /*Builds a Store object using the data from cobalt API*/
   factory Store.fromJson(Map<String, dynamic> parsedJson) {
     return Store(

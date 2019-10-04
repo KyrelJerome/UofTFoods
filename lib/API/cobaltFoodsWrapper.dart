@@ -6,7 +6,7 @@ import 'package:UofT_Foods/Objects/Store.dart';
 ///
 /// The REST API returns words that rhyme or are related to [Topic].
 class CobaltApi {
-  static const String key = 'bylTKgsa08vezNaD8VVdwrfx5vqnXN48';
+  static const String key = '7pBsdIP0UYl5l1uOm2gJNgki85BuHgM4';
   static const String keyParam = '?key=' + key;
 
   static const Map<String, String> keymap = {'Authorization': key};
@@ -87,7 +87,8 @@ class CobaltApi {
   /// Returns null if the API server is down, or the response is not JSON.
   Future<List<dynamic>> _getJson(String url) async {
     try {
-      final responseBody = (await http.get(url, headers: keymap)).body;
+      dynamic responseBody = (await http.get(url, headers: keymap)).body;
+      print(responseBody);
       var decodedJson = json.decode(responseBody);
       if (decodedJson is List<dynamic>) {
         return json.decode(responseBody);
