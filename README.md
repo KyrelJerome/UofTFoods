@@ -1,5 +1,4 @@
-# UofT Foods - [Available on Google Play Store Now!](https://play.google.com/store/apps/details?id=com.UofTFoods)
-
+#  UofT Foods
 
 ## Description
 A Flutter Mobile App designed to aid UofT Students and Staff easily find food options across all campuses.
